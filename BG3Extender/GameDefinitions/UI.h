@@ -16,6 +16,7 @@
 #include <NsGui/ObservableCollection.h>
 #include <NsGui/UIElementCollection.h>
 #include <NsGui/ContentControl.h>
+#include <NsGui/VisualTreeHelper.h>
 
 BEGIN_BARE_NS(Noesis)
 
@@ -29,6 +30,8 @@ struct GridLengthHelper
 };
 
 using LoadXamlProc = Ptr<BaseComponent>* (Ptr<BaseComponent>& ret, char const* path);
+using VisualPointConversionProc = Point (Visual::*)(Point const& point) const;
+using VisualTreeHelperHitTestProc = HitTestResult (*)(Visual* visual, Point const& point);
 
 struct SymbolManagerInternals
 {
@@ -213,6 +216,9 @@ struct VisualHelpers
     static Visual* GetVisualParent(Visual const* o);
     static uint32_t GetVisualChildrenCount(lua_State* L, Visual const* o);
     static Visual* GetVisualChild(Visual const* o, uint32_t index);
+    static Point PointFromScreen(lua_State* L, Visual const* o, Point const& point);
+    static Point PointToScreen(lua_State* L, Visual const* o, Point const& point);
+    static Visual* HitTest(lua_State* L, Visual* o, Point const& point);
 };
 
 struct UIElementDataHelpers

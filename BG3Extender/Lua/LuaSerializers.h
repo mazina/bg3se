@@ -115,6 +115,14 @@ namespace bg3se::lua
     inline LuaSerializer& serialize(LuaSerializer& s, STDWString& v) { return s.Visit(v); }
     inline LuaSerializer& serialize(LuaSerializer& s, StringView& v) { return s.Visit(v); }
     inline LuaSerializer& serialize(LuaSerializer& s, Noesis::Symbol& v) { return s.Visit(v); }
+    inline LuaSerializer& serialize(LuaSerializer& s, Noesis::Point& v)
+    {
+        s.BeginObject();
+        s.VisitProperty("X", v.x);
+        s.VisitProperty("Y", v.y);
+        s.EndObject();
+        return s;
+    }
     inline LuaSerializer& serialize(LuaSerializer& s, ImguiHandle& v) { return s.Visit(v); }
     inline LuaSerializer& serialize(LuaSerializer& s, Path& v) { return s.Visit(v); }
     inline LuaSerializer& serialize(LuaSerializer& s, Guid& v) { return s.Visit(v); }

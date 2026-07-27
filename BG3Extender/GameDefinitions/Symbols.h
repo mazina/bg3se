@@ -154,6 +154,9 @@ namespace bg3se
         void* Noesis__GUI__LoadXaml{ nullptr };
         void* Noesis__Visual__AddVisualChild{ nullptr };
         void* Noesis__Visual__RemoveVisualChild{ nullptr };
+        void* Noesis__Visual__PointFromScreen{ nullptr };
+        void* Noesis__Visual__PointToScreen{ nullptr };
+        void* Noesis__VisualTreeHelper__HitTest{ nullptr };
 
         GlobalSwitches** ls__GlobalSwitches{ nullptr };
 
