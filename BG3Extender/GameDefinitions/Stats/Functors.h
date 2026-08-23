@@ -206,12 +206,6 @@ struct InterruptContextData : public ContextData
     interrupt::AppliedChange Changes;
 };
 
-
-template <class TContext>
-using ExecuteFunctorProc = void(HitResult* hit, Functors* self, TContext* params);
-
-using ExecuteInterruptFunctorProc = void (HitResult* hit, ecs::EntityWorld* world, Functors* self, InterruptContextData* params);
-
 struct Functors : public stats::CNamedElementManager<Functor>
 {
     FixedString UniqueName;
@@ -360,17 +354,9 @@ struct RemoveStatusFunctor : public Functor
     FixedString StatusId; // Arg0
 };
 
-using StatsSystem_ThrowDamageEventProc = void (void* statsSystem, void* temp5, HitDesc* hit, AttackDesc* attack, bool a5, bool a6);
-
 struct DealDamageFunctor : public Functor
 {
     DEFN_FUNCTOR(DealDamage)
-
-    using ApplyDamageProc = HitResult * (HitResult* result, DealDamageFunctor* functor, ecs::EntityRef* casterHandle,
-        ecs::EntityRef* targetHandle, glm::vec3* position, bool isFromItem, SpellIdWithPrototype* spellId, 
-        int storyActionId, ActionOriginator* originator, resource::GuidResourceBankBase* classResourceMgr, 
-        HitDesc* hit, AttackDesc* attack, EntityHandle* sourceHandle2, HitWith hitWith, int conditionRollIndex,
-        bool entityDamagedEventParam, __int64 a17, SpellId* spellId2);
 
     DamageType DamageType{ DamageType::None }; // Arg2
     DealDamageWeaponType WeaponType{ DealDamageWeaponType::None }; // Arg1

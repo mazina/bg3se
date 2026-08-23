@@ -78,7 +78,7 @@ FunctorEventHooks::~FunctorEventHooks()
     hooks.esv__ExecuteStatsFunctor_InterruptContext.ClearHook();
 }
 
-HitResult* FunctorEventHooks::OnDealDamage(bg3se::stats::DealDamageFunctor::ApplyDamageProc* next, 
+HitResult* FunctorEventHooks::OnDealDamage(bg3se::stats::DealDamageFunctor__ApplyDamageProc* next, 
     HitResult* result, bg3se::stats::DealDamageFunctor* functor, ecs::EntityRef* casterHandle,
     ecs::EntityRef* targetHandle, glm::vec3* position, bool isFromItem, SpellIdWithPrototype* spellId,
     int storyActionId, ActionOriginator* originator, resource::GuidResourceBankBase* classResourceMgr,
@@ -134,7 +134,7 @@ HitResult* FunctorEventHooks::OnDealDamage(bg3se::stats::DealDamageFunctor::Appl
     return ret;
 }
 
-void FunctorEventHooks::OnEntityDamageEvent(bg3se::stats::StatsSystem_ThrowDamageEventProc* next, void* statsSystem,
+void FunctorEventHooks::OnEntityDamageEvent(bg3se::esv::StatsSystem__ThrowDamageEventProc* next, esv::StatsSystem* statsSystem,
     void* temp5, HitDesc* hit, AttackDesc* attack, bool a5, bool a6)
 {
     {

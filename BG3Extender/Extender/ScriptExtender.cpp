@@ -237,7 +237,7 @@ std::wstring ScriptExtender::MakeLogFilePath(std::wstring const & Type, std::wst
     return ss.str();
 }
 
-void ScriptExtender::OnStatsLoadGuarded(stats::RPGStats::LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths)
+void ScriptExtender::OnStatsLoadGuarded(stats::RPGStats__LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths)
 {
     // Stats load is scheduled from the client on the shared worker pool
     ContextGuard _(ContextType::Client);
@@ -272,21 +272,21 @@ void ScriptExtender::OnStatsLoadGuarded(stats::RPGStats::LoadProc* wrapped, stat
     imgui_.EnableUI(true);
 }
 
-void ScriptExtender::OnStatsLoad(stats::RPGStats::LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths)
+void ScriptExtender::OnStatsLoad(stats::RPGStats__LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths)
 {
     BEGIN_GUARDED()
     OnStatsLoadGuarded(wrapped, mgr, paths);
     END_GUARDED()
 }
 
-void ScriptExtender::OnECSUpdate(ecs::EntityWorld::UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time)
+void ScriptExtender::OnECSUpdate(ecs::EntityWorld__UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time)
 {
     BEGIN_GUARDED()
     OnECSUpdateGuarded(wrapped, entityWorld, time);
     END_GUARDED()
 }
 
-void ScriptExtender::OnECSUpdateGuarded(ecs::EntityWorld::UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time)
+void ScriptExtender::OnECSUpdateGuarded(ecs::EntityWorld__UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time)
 {
     auto ecs = GetECS(entityWorld);
     if (ecs != nullptr) {
@@ -406,7 +406,7 @@ void ScriptExtender::OnCoreLibInit(void * self)
     PostStartup();
 }
 
-void ScriptExtender::OnAppUpdatePaths(void * self)
+void ScriptExtender::OnAppUpdatePaths(App* self)
 {
     if (!config_.CustomProfile.empty() && GetStaticSymbols().ls__PathRoots) {
         auto& gameLocalPath = GetStaticSymbols().ls__PathRoots[4];
@@ -527,7 +527,7 @@ std::optional<STDString> ScriptExtender::GetPathOverride(STDString const & path)
     }
 }
 
-FileReader * ScriptExtender::OnFileReaderCreate(FileReader::CtorProc* next, FileReader * self, Path const& path, unsigned int type, unsigned int unknown)
+FileReader * ScriptExtender::OnFileReaderCreate(FileReader__CtorProc* next, FileReader * self, Path const& path, unsigned int type, unsigned int unknown)
 {
     if (!pathOverrides_.empty()) {
         std::shared_lock lock(pathOverrideMutex_);

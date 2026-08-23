@@ -1094,5 +1094,19 @@
 		<Target Type="Indirect" Offset="@ref1" Symbol="esv__gSurfaceActionFactory" />
 		<Target Type="Indirect" Offset="@ref2" Symbol="esv__SurfaceActionFactory__DoCreateAction" />
     </Mapping>
+
+    <Mapping Name="ui::DataContextProvider::ExecuteCommandQueues">
+		49 8d 8f c0 1c 00 00 // lea     rcx, [r15+1CC0h]
+		e8 ?? ?? ?? ?? // call    ui__DataContextProvider__PreCommandExecution
+		49 8d 8f 80 03 00 00 // lea     rcx, [r15+380h]
+		49 8b d4 // mov     rdx, r12
+		e8 ?? ?? ?? ?? // call    ui__CommandProcessor__ExecuteCommandQueue
+		49 8b d4 // mov     rdx, r12
+		49 8d 8f c0 1c 00 00 // lea     rcx, [r15+1CC0h]
+		@ref3 e8 ?? ?? ?? ?? // call    ui__DataContextProvider__ExecuteCommandQueues
+		49 8d 8f 78 08 00 00 // lea     rcx, [r15+878h]; struct __crt_stdio_stream *
+		0f 28 d6 // movaps  xmm2, xmm6
+		<Target Type="Indirect" Offset="@ref3" Symbol="ui__DataContextProvider__ExecuteCommandQueues" />
+    </Mapping>
   </Mappings>
 </BinaryMappings>

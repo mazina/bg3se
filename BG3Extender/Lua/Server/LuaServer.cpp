@@ -10,6 +10,7 @@
 #include <GameDefinitions/GuidResources.h>
 #include <GameDefinitions/Resources.h>
 #include <GameDefinitions/Net.h>
+#include <GameDefinitions/Level.h>
 
 #include <Lua/LevelIteratorFunctions.inl>
 #include <Lua/Server/FunctorEvents.inl>

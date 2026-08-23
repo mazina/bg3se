@@ -189,8 +189,6 @@ struct FunctorGroup
 
 struct Object : public Noncopyable<Object>
 {
-    using SetPropertyStringProc = void(Object* self, FixedString const& propertyName, char const* value);
-
     struct RollCondition
     {
         FixedString Name;

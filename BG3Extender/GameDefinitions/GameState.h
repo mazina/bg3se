@@ -79,8 +79,6 @@ struct GameStateEventManager
 
 struct App
 {
-    using LoadGraphicSettingsProc = void (App*);
-    using CtorProc = App * (App*);
 };
 
 END_SE()
@@ -139,10 +137,6 @@ struct EoCServer : public ProtectedGameObject<EoCServer>
     __int64 field_2B0;
 };
 
-typedef void(*GameStateEventManager__ExecuteGameStateChangedEvent)(void* self, GameState fromState, GameState toState);
-typedef void(*GameStateThreaded__GameStateWorker__DoWork)(void* self);
-typedef void(*GameStateMachine__Update)(void* self, GameTime* time);
-
 END_NS()
 
 
@@ -156,8 +150,6 @@ struct GameStateMachine : public ProtectedGameObject<GameStateMachine>
         
 struct EoCClient : public ProtectedGameObject<EoCClient>
 {
-    using HandleErrorProc = void (void* self, TranslatedString const& message, bool exitGame, TranslatedString const& a4, uint8_t messageBoxLocalId);
-
     void* VMT_InputEventListener;
     void* VMT_NetEventListener;
     void* field_10;
@@ -208,9 +200,5 @@ struct EoCClient : public ProtectedGameObject<EoCClient>
     void* LobbyDataCache;
     // etc.
 };
-
-typedef void(*GameStateEventManager__ExecuteGameStateChangedEvent)(void* self, GameState fromState, GameState toState);
-typedef void(*GameStateThreaded__GameStateWorker__DoWork)(void* self);
-typedef void(*GameStateMachine__Update)(void* self, GameTime* time);
 
 END_NS()

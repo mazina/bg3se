@@ -1,5 +1,6 @@
 #include <GameDefinitions/Ai.h>
 #include <Lua/Libs/Level.h>
+#include <GameDefinitions/Level.h>
 #include <GameDefinitions/Physics.h>
 #include <GameDefinitions/Surface.h>
 

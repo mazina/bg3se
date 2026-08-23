@@ -1,6 +1,8 @@
 #pragma once
 
 #include <GameDefinitions/CharacterCreation.h>
+#include <GameDefinitions/Animation.h>
+#include <GameDefinitions/Resources.h>
 
 BEGIN_SE()
 
@@ -883,8 +885,8 @@ struct EquipmentVisualRequest
     FixedString Level;
     VisualAttachmentFlags AttachFlags;
     EntityHandle Parent;
-    Array<resource::PresetData::ScalarParameter> ScalarParameters;
-    Array<resource::PresetData::Vector3Parameter> Vector3Parameters;
+    Array<material::ScalarParameterPreset> ScalarParameters;
+    Array<material::Vector3ParameterPreset> Vector3Parameters;
     EntityHandle Item;
     VisualLoadFlags VisualFlags;
     uint8_t HairType;
@@ -960,6 +962,12 @@ struct EquipmentUnloadRequest
     ItemSlot Slot;
 };
 
+struct EquipmentEventSlotData
+{
+    EntityHandle Item;
+    uint32_t field_8{ 0 };
+};
+
 struct EquipmentVisualsSystem : public BaseSystem
 {
     DEFINE_SYSTEM(ClientEquipmentVisuals, "ecl::EquipmentVisualsSystem")
@@ -976,7 +984,7 @@ struct EquipmentVisualsSystem : public BaseSystem
     [[bg3::hidden]] UnknownSignalSubscriber field_F8;
     Array<EquipmentRemoveMaterialRequest> RemoveMaterials;
     HashMap<EntityHandle, uint64_t> PendingSlotLoads;
-    HashMap<EntityHandle, HashMap<uint16_t, bg3se::inventory::ContainerSlotData>> InventoryEvents;
+    HashMap<EntityHandle, HashMap<uint16_t, EquipmentEventSlotData>> InventoryEvents;
     Array<EquipmentUnloadRequest> UnloadRequests;
     HashSet<EntityHandle> DyeUpdates;
     [[bg3::readonly]] int StreamingCount;

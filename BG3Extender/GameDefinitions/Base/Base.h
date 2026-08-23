@@ -41,6 +41,7 @@ END_SE()
 #include <GameDefinitions/Base/Serialization.h>
 #include <GameDefinitions/TranslatedString.h>
 #include <GameDefinitions/GlobalFixedStrings.h>
+#include <GameHooks/EngineHooksFwdDecl.h>
 
 #define DEFINE_COMPONENT(componentType, cls) \
     static constexpr ExtComponentType ComponentType = ExtComponentType::componentType; \

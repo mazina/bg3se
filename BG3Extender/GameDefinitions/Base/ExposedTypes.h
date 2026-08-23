@@ -4,6 +4,9 @@
 
 BEGIN_SE()
 
+using PlayerId = int16_t;
+using InputPlayerIndex = uint32_t;
+
 struct GameTime
 {
     double Time{ 0 };

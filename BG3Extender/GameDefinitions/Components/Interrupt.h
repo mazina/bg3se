@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GameDefinitions/Base/Base.h>
+#include <GameDefinitions/Interrupt.h>
 
 BEGIN_NS(interrupt)
 

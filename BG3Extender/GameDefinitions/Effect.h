@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GameDefinitions/GuidResources.h>
+
 BEGIN_NS(ecl)
 
 struct ProvidedMultiEffectObject

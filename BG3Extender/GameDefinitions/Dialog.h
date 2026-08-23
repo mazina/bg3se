@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GameDefinitions/Base/Base.h>
+#include <GameDefinitions/EntitySystem.h>
 
 BEGIN_NS(dlg)
 

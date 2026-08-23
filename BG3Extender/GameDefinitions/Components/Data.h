@@ -4,6 +4,9 @@
 #include <GameDefinitions/EntitySystem.h>
 #include <GameDefinitions/RootTemplates.h>
 #include <GameDefinitions/Progression.h>
+#include <GameDefinitions/Components/SpellCastShared.h>
+#include <GameDefinitions/Components/Death.h>
+#include <GameDefinitions/Ai.h>
 
 BEGIN_SE()
 

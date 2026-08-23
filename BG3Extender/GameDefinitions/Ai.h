@@ -9,8 +9,6 @@ using AiGridLayerId = uint16_t;
 
 static constexpr AiMetaDataId AiNullMetaData = 0xffff;
 
-using AiPathId = int32_t;
-
 struct AiFlags
 {
     AiFlags()
@@ -513,9 +511,6 @@ struct AiPath : public ProtectedGameObject<AiPath>
 struct AiGrid : public ProtectedGameObject<AiGrid>
 {
     static constexpr float PatchSize = 25.0f;
-
-    using FindPathProc = void (AiGrid* self, AiPathId pathId);
-    using FindPathImmediateProc = bool (AiGrid* self, AiPathId pathId);
 
     [[bg3::hidden]] void* VMT;
     __int64 field_8;

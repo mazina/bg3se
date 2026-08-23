@@ -87,8 +87,6 @@ struct SurfaceAction : ProtectedGameObject<SurfaceAction>
     uint8_t field_78;
 };
 
-using SurfaceActionFactoryCreateProc = SurfaceAction* (void* self, SurfaceActionType type, uint64_t actionHandle);
-
 struct CreateSurfaceActionBase : public SurfaceAction
 {
     EntityHandle Owner;

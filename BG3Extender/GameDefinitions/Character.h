@@ -15,9 +15,6 @@ struct PlayerCustomData : public ProtectedGameObject<PlayerCustomData>
     FixedString ReservedProfileID;
 };
 
-using PlayerId = int16_t;
-using InputPlayerIndex = uint32_t;
-
 /*struct PlayerManager
 {
     struct PlayerInfo

@@ -42,7 +42,7 @@ void Hooks::HookNetworkMessages(net::MessageFactory* factory)
     networkingInitialized_ = true;
 }
 
-void Hooks::OnParseDataFolder(stats::RPGStats::ParseStructureFolderProc* next, stats::RPGStats* self, Array<STDString>* paths)
+void Hooks::OnParseDataFolder(stats::RPGStats__ParseStructureFolderProc* next, stats::RPGStats* self, Array<STDString>* paths)
 {
     LuaVirtualPin lua(gExtender->GetCurrentExtensionState());
     if (lua) {

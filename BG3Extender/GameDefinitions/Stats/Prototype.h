@@ -54,8 +54,6 @@ struct SpellMetaCondition
 
 struct SpellPrototype : public Noncopyable<SpellPrototype>
 {
-    using InitProc = void(SpellPrototype* self, FixedString const& spellId);
-
     [[bg3::readonly]] int StatsObjectIndex;
     SpellType SpellTypeId;
     FixedString SpellId;
@@ -139,12 +137,8 @@ struct StatsSoundInfo
     uint8_t Type;
 };
 
-using ParseStaticBoostsProc = bool (LSStringView& str, Array<Guid>& boosts, void* temp);
-
 struct StatusPrototype : public Noncopyable<StatusPrototype>
 {
-    using InitProc = void(StatusPrototype* self, FixedString const& statusId, uint8_t flags);
-
     [[bg3::readonly]] int StatsObjectIndex{ -1 };
     StatusType StatusId;
     FixedString StatusName;
@@ -184,8 +178,6 @@ struct [[bg3::hidden]] StatusPrototypeManager : public ProtectedGameObject<Statu
 
 struct PassivePrototype : public Noncopyable<PassivePrototype>
 {
-    using InitProc = void(PassivePrototype* self, stats::Object* stats);
-
     uint32_t Properties{ 0 };
     FixedString Name;
     DescriptionInfo Description;
@@ -221,8 +213,6 @@ struct [[bg3::hidden]] PassivePrototypeManager : public ProtectedGameObject<Pass
 
 struct InterruptPrototype
 {
-    using InitProc = void(InterruptPrototype* self, stats::Object* stats);
-
     FixedString Name;
     DescriptionInfo Description;
     uint16_t InterruptContext{ 0 };

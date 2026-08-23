@@ -1,4 +1,5 @@
 #include <GameDefinitions/Components/ServerData.h>
+#include <GameDefinitions/Surface.h>
 
 BEGIN_NS(esv)
 

@@ -3,10 +3,13 @@
 #include <GameDefinitions/Symbols.h>
 
 #include <GameDefinitions/Ai.h>
+#include <GameDefinitions/Camera.h>
 #include <GameDefinitions/Cursor.h>
 #include <GameDefinitions/Dialog.h>
 #include <GameDefinitions/DragDrop.h>
 #include <GameDefinitions/Input.h>
+#include <GameDefinitions/Lighting.h>
+#include <GameDefinitions/Level.h>
 #include <GameDefinitions/Controllers/Controller.h>
 #include <GameDefinitions/Controllers/Action.h>
 #include <GameDefinitions/Controllers/Behaviour.h>
@@ -20,7 +23,9 @@
 #include <GameDefinitions/Resources.h>
 #include <GameDefinitions/Render.h>
 #include <GameDefinitions/Skeleton.h>
+#include <GameDefinitions/Surface.h>
 #include <GameDefinitions/Components/All.h>
+#include <GameDefinitions/Stats/Prototype.h>
 #include <GameDefinitions/Stats/UseActions.h>
 #include <GameDefinitions/UI.h>
 #include <GameDefinitions/AiHelpers.h>

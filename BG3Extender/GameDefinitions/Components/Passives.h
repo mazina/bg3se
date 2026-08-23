@@ -2,6 +2,7 @@
 
 #include <GameDefinitions/Base/Base.h>
 #include <GameDefinitions/EntitySystem.h>
+#include <GameDefinitions/Stats/Functors.h>
 
 BEGIN_SE()
 
