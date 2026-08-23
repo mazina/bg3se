@@ -97,11 +97,8 @@ struct StaticSymbols : Noncopyable<StaticSymbols>
 
     stats::RPGStats** gRPGStats{ nullptr };
     stats::RPGStats__LoadProc* RPGStats__Load{ nullptr };
-    stats::RPGStats__ParseStructureFolderProc* RPGStats__PreParseDataFolder{ nullptr };
+    stats::RPGStats__ParseDataBuffersProc* RPGStats__ParseDataBuffers{ nullptr };
     stats::Object__SetPropertyStringProc* stats__Object__SetPropertyString{ nullptr };
-    /*RPGStats::ParsePropertiesProc* RPGStats__ParseProperties{nullptr};
-    SkillPrototypeManager** eoc__SkillPrototypeManager{ nullptr };
-    StatusPrototypeManager** eoc__StatusPrototypeManager{ nullptr };*/
 
     esv::LevelManager** esv__LevelManager{ nullptr };
     ecl::LevelManager** ecl__LevelManager{ nullptr };

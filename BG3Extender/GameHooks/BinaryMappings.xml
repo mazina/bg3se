@@ -808,14 +808,25 @@
       <Target Type="Indirect" Offset="@ref1" Symbol="eoc__PassivePrototype__Init" />
     </Mapping>
 
-    <Mapping Name="RPGStats::PreParseDataFolder" Scope="Custom">
-      48 83 c6 18 // add     rsi, 18h
-      49 83 ef 01 // sub     r15, 1
-      0f 85 ?? ff ff ff // jnz     loc_140EA8070
-      49 8b d4 // mov     rdx, r12
-      49 8b ce // mov     rcx, r14
-      @ref1 e8 ?? ?? ?? ?? // call    RPGStats__PreParseDataFolder
-      <Target Type="Indirect" Offset="@ref1" Symbol="RPGStats__PreParseDataFolder" />
+    <Mapping Name="RPGStats::ParseDataBuffers">
+		48 89 4c 24 08 // mov     [rsp+arg_0], rcx
+		53 // push    rbx
+		55 // push    rbp
+		56 // push    rsi
+		57 // push    rdi
+		41 54 // push    r12
+		41 55 // push    r13
+		41 56 // push    r14
+		41 57 // push    r15
+		48 83 ec 68 // sub     rsp, 68h
+		48 8b f1 // mov     rsi, rcx
+		48 8b 99 d8 03 00 00 // mov     rbx, [rcx+3D8h]
+		48 85 db // test    rbx, rbx
+		0f 84 ?? ?? ?? ?? // jz      loc_140EDA715
+		48 63 81 e4 03 00 00 // movsxd  rax, dword ptr [rcx+3E4h]
+		48 8d 04 c3 // lea     rax, [rbx+rax*8]
+		48 89 84 24 c8 00 00 00 // mov     [rsp+0A8h+arg_18], rax
+		<Target Type="Absolute" Offset="0" Symbol="RPGStats__ParseDataBuffers" />
     </Mapping>
 
     <!-- Sig: "Stats/Generated" string -->
@@ -847,7 +858,6 @@
       <Target Type="Indirect" Offset="@stats" Symbol="gRPGStats" />
       <Target Type="Indirect" Offset="@load" Symbol="RPGStats__Load" />
       <Target Type="Absolute" Offset="0" NextSymbol="eoc::PassivePrototype::Init" NextSymbolSeekSize="0x100" />
-      <Target Type="Indirect" Offset="@load" NextSymbol="RPGStats::PreParseDataFolder" NextSymbolSeekSize="0x180" />
     </Mapping>
 
     <Mapping Name="StatsPrototypeManagers">

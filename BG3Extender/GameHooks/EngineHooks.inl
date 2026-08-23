@@ -1,5 +1,5 @@
 HOOK_DEFN(RPGStats__Load, RPGStats__Load, stats::RPGStats__LoadProc)
-HOOK_DEFN(RPGStats__PreParseDataFolder, RPGStats__PreParseDataFolder, stats::RPGStats__ParseStructureFolderProc)
+HOOK_DEFN(RPGStats__ParseDataBuffers, RPGStats__ParseDataBuffers, stats::RPGStats__ParseDataBuffersProc)
 
 HOOK_DEFN(FileReader__ctor, ls__FileReader__ctor, FileReader__CtorProc)
 HOOK_DEFN(Kernel_FindFirstFileW, Kernel_FindFirstFileW, FindFirstFileWProc)

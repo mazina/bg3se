@@ -15,7 +15,7 @@ public:
     void Startup();
     void HookNetworkMessages(net::MessageFactory* factory);
 
-    void OnParseDataFolder(stats::RPGStats__ParseStructureFolderProc* next, stats::RPGStats* self, Array<STDString>* paths);
+    void OnParseDataBuffers(stats::RPGStats* self);
     void OnClientConnectMessage(net::Message::SerializeProc* wrapped, net::Message* msg, net::BitstreamSerializer* serializer);
 
     enum class ClientConnectMessageSerializeTag{};

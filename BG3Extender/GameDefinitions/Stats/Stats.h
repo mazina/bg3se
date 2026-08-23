@@ -106,7 +106,7 @@ struct RNG
 struct PreParsedDataBuffer
 {
     ScratchString Buf;
-    FixedString Name;
+    FixedString Type;
     void* field_28;
 };
 

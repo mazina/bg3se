@@ -20,7 +20,7 @@ ModManager* StaticSymbols::GetModManagerServer() const
     }
 }
 
-inline std::optional<ecl::GameState> StaticSymbols::GetClientState() const
+std::optional<ecl::GameState> StaticSymbols::GetClientState() const
 {
     if (ecl__EoCClient != nullptr
         && *ecl__EoCClient != nullptr
@@ -31,7 +31,7 @@ inline std::optional<ecl::GameState> StaticSymbols::GetClientState() const
     }
 }
 
-inline std::optional<esv::GameState> StaticSymbols::GetServerState() const
+std::optional<esv::GameState> StaticSymbols::GetServerState() const
 {
     if (esv__EoCServer != nullptr
         && *esv__EoCServer != nullptr

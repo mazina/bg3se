@@ -56,6 +56,7 @@ struct InterruptContextData;
 
 using RPGStats__LoadProc = void(RPGStats* self, Array<STDString>* paths);
 using RPGStats__ParseStructureFolderProc = void(RPGStats* self, Array<STDString>* paths);
+using RPGStats__ParseDataBuffersProc = bool (RPGStats* self);
 
 using Object__SetPropertyStringProc = void (Object* self, FixedString const& propertyName, char const* value);
 
