@@ -95,12 +95,14 @@ struct OsirisVariableHelper;
 struct SavegameVisitor;
 struct StatsSystem;
 struct SurfaceAction;
+struct TransformSurfaceAction;
 
 using OsirisVariableHelper__SavegameVisitProc = bool(OsirisVariableHelper*, SavegameVisitor*);
 
 using StatsSystem__ThrowDamageEventProc = void(StatsSystem* statsSystem, void* temp5, HitDesc* hit, AttackDesc* attack, bool a5, bool a6);
 
 using SurfaceActionFactoryCreateProc = SurfaceAction* (void* self, SurfaceActionType type, uint64_t actionHandle);
+using TransformSurfaceAction__InitProc = void (TransformSurfaceAction*, SurfaceTransformActionType transformAction, SurfaceLayer8 layer, SurfaceType originSurface);
 
 using GameStateEventManager__ExecuteGameStateChangedEventProc = void (void* self, GameState fromState, GameState toState);
 using GameStateThreaded__GameStateWorker__DoWorkProc = void (void* self);

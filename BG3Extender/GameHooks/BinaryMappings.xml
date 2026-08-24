@@ -1105,6 +1105,20 @@
 		<Target Type="Indirect" Offset="@ref2" Symbol="esv__SurfaceActionFactory__DoCreateAction" />
     </Mapping>
 
+    <Mapping Name="esv::TransformSurfaceAction::Init">
+		44 0f b6 4d d0 // movzx   r9d, [rbp+var_30]
+		45 0f b6 c7 // movzx   r8d, r15b
+		41 0f b6 d5 // movzx   edx, r13b
+		48 8b ce // mov     rcx, rsi
+		@ref1 e8 ?? ?? ?? ?? // call    esv__TransformSurfaceAction__Init
+		f2 41 0f 10 06 // movsd   xmm0, qword ptr [r14]
+		f2 0f 11 86 a0 00 00 00 // movsd   qword ptr [rsi+0A0h], xmm0
+		41 8b 46 08 // mov     eax, [r14+8]
+		89 86 a8 00 00 00 // mov     [rsi+0A8h], eax
+		48 89 9e 98 00 00 00 // mov     [rsi+98h], rbx
+		<Target Type="Indirect" Offset="@ref1" Symbol="esv__TransformSurfaceAction__Init" />
+    </Mapping>
+
     <Mapping Name="ui::DataContextProvider::ExecuteCommandQueues">
 		49 8d 8f c0 1c 00 00 // lea     rcx, [r15+1CC0h]
 		e8 ?? ?? ?? ?? // call    ui__DataContextProvider__PreCommandExecution

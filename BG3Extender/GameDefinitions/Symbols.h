@@ -107,6 +107,7 @@ struct StaticSymbols : Noncopyable<StaticSymbols>
 
     void** esv__gSurfaceActionFactory{ nullptr };
     esv::SurfaceActionFactoryCreateProc* esv__SurfaceActionFactory__DoCreateAction{ nullptr };
+    esv::TransformSurfaceAction__InitProc* esv__TransformSurfaceAction__Init{ nullptr };
 
     AiGrid__FindPathProc* eoc__AiGrid__FindPath{ nullptr };
     AiGrid__FindPathImmediateProc* eoc__AiGrid__FindPathImmediate{ nullptr };

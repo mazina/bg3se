@@ -200,6 +200,7 @@ namespace bg3se
 
         SYM_OFF(esv__gSurfaceActionFactory);
         SYM_OFF(esv__SurfaceActionFactory__DoCreateAction);
+        SYM_OFF(esv__TransformSurfaceAction__Init);
 
         SYM_OFF(eoc__AiGrid__FindPath);
         SYM_OFF(eoc__AiGrid__FindPathImmediate);
