@@ -3,23 +3,23 @@
 
 BEGIN_NS(lua)
 
-GenericPropertyMap& ImguiObjectProxyMetatable::GetPropertyMap(CppObjectMetadata const& meta)
+GenericPropertyMap& ImguiObjectProxyMetatable::GetPropertyMap(lua_State* L, CppObjectMetadata const& meta)
 {
     se_assert(meta.MetatableTag == MetaTag);
-    return GetRenderable(meta)->GetRTTI();
+    return GetRenderable(L, meta)->GetRTTI();
 }
 
-extui::Renderable* ImguiObjectProxyMetatable::GetRenderable(CppObjectMetadata const& meta)
+extui::Renderable* ImguiObjectProxyMetatable::GetRenderable(lua_State* L, CppObjectMetadata const& meta)
 {
     se_assert(meta.MetatableTag == MetaTag);
-    return ecl::ExtensionState::Get().GetClientLua()->IMGUI().GetRenderable(meta.Value);
+    return ecl::lua::ClientState::FromLua(L)->IMGUI().GetRenderable(meta.Value);
 }
 
 extui::Renderable* ImguiObjectProxyMetatable::TryGetGeneric(lua_State* L, int index, extui::IMGUIObjectType type)
 {
     CppObjectMetadata meta;
     if (lua_try_get_cppvalue(L, index, MetaTag, meta)) {
-        auto obj = GetRenderable(meta);
+        auto obj = GetRenderable(L, meta);
         if (obj != nullptr && obj->GetType() == type) {
             return obj;
         }
@@ -31,7 +31,7 @@ extui::Renderable* ImguiObjectProxyMetatable::TryGetGeneric(lua_State* L, int in
 extui::Renderable* ImguiObjectProxyMetatable::GetGeneric(lua_State* L, int index, extui::IMGUIObjectType type)
 {
     auto meta = lua_get_cppvalue(L, index, MetaTag);
-    auto obj = GetRenderable(meta);
+    auto obj = GetRenderable(L, meta);
     if (obj == nullptr) {
         luaL_error(L, "Argument %d: IMGUI object no longer exists", index);
         return nullptr;
@@ -54,7 +54,7 @@ extui::Renderable* ImguiObjectProxyMetatable::GetGeneric(lua_State* L, int index
 
 extui::Renderable* ImguiObjectProxyMetatable::GetGeneric(lua_State* L, int index, CppObjectMetadata const& meta)
 {
-    auto obj = GetRenderable(meta);
+    auto obj = GetRenderable(L, meta);
     if (obj == nullptr) {
         luaL_error(L, "Argument %d: IMGUI object no longer exists", index);
         return nullptr;
@@ -65,7 +65,7 @@ extui::Renderable* ImguiObjectProxyMetatable::GetGeneric(lua_State* L, int index
 
 int ImguiObjectProxyMetatable::Index(lua_State* L, CppObjectMetadata& self)
 {
-    auto obj = GetRenderable(self);
+    auto obj = GetRenderable(L, self);
     if (obj == nullptr) {
         luaL_error(L, "IMGUI object no longer exists");
         return 0;
@@ -96,7 +96,7 @@ int ImguiObjectProxyMetatable::Index(lua_State* L, CppObjectMetadata& self)
 
 int ImguiObjectProxyMetatable::NewIndex(lua_State* L, CppObjectMetadata& self)
 {
-    auto obj = GetRenderable(self);
+    auto obj = GetRenderable(L, self);
     if (obj == nullptr) {
         luaL_error(L, "IMGUI object no longer exists");
         return 0;
@@ -134,7 +134,7 @@ int ImguiObjectProxyMetatable::NewIndex(lua_State* L, CppObjectMetadata& self)
 int ImguiObjectProxyMetatable::ToString(lua_State* L, CppObjectMetadata& self)
 {
     char entityName[200];
-    auto obj = GetRenderable(self);
+    auto obj = GetRenderable(L, self);
     if (obj) {
         _snprintf_s(entityName, std::size(entityName) - 1, "%s (%llx)", obj->GetTypeName(), self.Value);
     } else {
@@ -157,7 +157,7 @@ bool ImguiObjectProxyMetatable::IsEqual(lua_State* L, CppObjectMetadata& self, i
 
 int ImguiObjectProxyMetatable::Next(lua_State* L, CppObjectMetadata& self)
 {
-    auto obj = GetRenderable(self);
+    auto obj = GetRenderable(L, self);
     if (obj == nullptr) {
         luaL_error(L, "IMGUI object no longer exists");
         return 0;
@@ -174,7 +174,7 @@ int ImguiObjectProxyMetatable::Next(lua_State* L, CppObjectMetadata& self)
 
 char const* ImguiObjectProxyMetatable::GetTypeName(lua_State* L, CppObjectMetadata& self)
 {
-    auto obj = GetRenderable(self);
+    auto obj = GetRenderable(L, self);
     if (obj == nullptr) {
         return "Dead IMGUI object";
     } else {
