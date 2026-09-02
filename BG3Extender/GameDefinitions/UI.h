@@ -4,6 +4,7 @@
 
 #include <NsCore/BaseComponent.h>
 #include <NsCore/TypeClass.h>
+#include <NsCore/Delegate.h>
 #include <NsGui/GridLength.h>
 #include <NsGui/BaseCommand.h>
 #include <NsGui/DependencyData.h>
@@ -305,6 +306,19 @@ struct MessageBoxManager;
 struct BrushManager;
 struct WindowManager;
 
+struct UIEvent
+{
+    uint32_t GameStateId{ 0 };
+    uint8_t Type{ 0 };
+    FixedString EventName;
+    FixedString field_C;
+    bool field_10{ false };
+    bool field_11{ false };
+    PlayerId PlayerId;
+    Array<input::FireEventDesc>* InputEvents{ nullptr };
+};
+
+
 struct UIInitialSubstate : public Noesis::BaseComponent
 {
     String Name;
@@ -387,7 +401,7 @@ struct UIWidget : public UserControl
     WindowManager* WindowManager;
     StateMachine* StateMachine;
     UIStateWidget* WidgetData;
-    void* InputManager;
+    input::InputManager* InputManager;
     Guid StateId;
     void* ParentCanvas;
     int LayerIndex;
@@ -560,7 +574,93 @@ struct GameUIParams
     char field_37;
 };
 
-struct NoesisUIManager
+template <class T> requires requires(T v) { { v.QueueNext } -> std::same_as<T*&>; }
+struct IntrusiveMPSCQueueSmall : public ProtectedGameObject<IntrusiveMPSCQueueSmall<T>>
+{
+    T* WriteStart{ nullptr };
+    T* ReadStart{ nullptr };
+    T Sentinel;
+};
+
+struct BaseCollectionCommand
+{
+    virtual ~BaseCollectionCommand() {}
+    virtual void Run(Noesis::BaseCollection*) {}
+
+    uint64_t ID;
+    BaseCollectionCommand* QueueNext;
+};
+
+struct IBaseProperty
+{
+    virtual void SetFromUI(Noesis::BaseComponent* value) = 0;
+    virtual void DeferChange(Noesis::BaseComponent* value) = 0;
+};
+
+template <class T>
+struct DeferredProperty : public IBaseProperty
+{
+    // TODO - unimplemented
+    void SetFromUI(Noesis::BaseComponent* value) override {}
+    void DeferChange(Noesis::BaseComponent* value) override {}
+
+    Noesis::BaseComponent* Object;
+    T Value;
+    Noesis::Symbol Name;
+};
+
+struct DeferredCollectionsManager : public ProtectedGameObject<DeferredCollectionsManager>
+{
+    uint64_t qword0;
+    HashMap<uint64_t, Noesis::Ptr<Noesis::BaseObservableCollection>> Collections;
+    IntrusiveMPSCQueueSmall<BaseCollectionCommand> Queue;
+    CRITICAL_SECTION CS;
+    uint8_t Flags;
+};
+
+struct DeferredPredicateRefreshParam
+{
+    void* Predicate; // FilterPredicate*
+    DeferredPredicateRefreshParam* QueueNext;
+};
+
+struct DeferredPredicatesManager : public ProtectedGameObject<DeferredPredicatesManager>
+{
+    IntrusiveMPSCQueueSmall<DeferredPredicateRefreshParam> Queue;
+    uint8_t Flags;
+};
+
+struct DeferredPropertyChangedParams
+{
+    ViewModel* ViewModel;
+    Noesis::Symbol Name;
+    DeferredPropertyChangedParams* QueueNext;
+};
+
+struct DeferredSetFromUIParams
+{
+    IBaseProperty* Property;
+    ui::ViewModel* ViewModel;
+    Noesis::BaseComponent* Value;
+    DeferredSetFromUIParams* QueueNext;
+};
+
+struct DeferredListenersStorageParams
+{
+    IBaseProperty* Listener;
+    DeferredListenersStorageParams* QueueNext;
+};
+
+struct DeferredPropertiesManager : public ProtectedGameObject<DeferredPropertiesManager>
+{
+    IntrusiveMPSCQueueSmall<DeferredPropertyChangedParams> PropertyChanges;
+    IntrusiveMPSCQueueSmall<DeferredSetFromUIParams> SetFromUI;
+    IntrusiveMPSCQueueSmall<DeferredListenersStorageParams> ListenerStorage;
+    uint8_t Flags;
+};
+
+
+struct NoesisUIManager : public ProtectedGameObject<NoesisUIManager>
 {
     GameUIParams Params;
     Noesis::BaseRefCounted* RenderContext;
@@ -575,9 +675,9 @@ struct NoesisUIManager
     Noesis::BaseRefCounted* ReloadingXaml;
     Noesis::BaseRefCounted* DirectlyOver;
     uint32_t field_90;
-    void* DeferredCollectionsManager;
-    void* DeferredPredicatesManager;
-    void* DeferredPropertiesManager;
+    DeferredCollectionsManager* DeferredCollectionsManager;
+    DeferredPredicatesManager* DeferredPredicatesManager;
+    DeferredPropertiesManager* DeferredPropertiesManager;
     BrushManager* BrushManager;
     ContextMenuManager* ContextMenuManager;
     ModManager* ModManager;
@@ -603,7 +703,7 @@ struct NoesisUIManager
     uint8_t Flags2;
 };
 
-struct BrushManagerBase
+struct BrushManagerBase : public ProtectedGameObject<BrushManagerBase>
 {
     void* VMT;
     void* TextureProvider;
@@ -620,20 +720,20 @@ struct BrushManager : public BrushManagerBase
     void* TextureProvider2;
 };
 
-struct CommandProcessor
+struct CommandProcessor : public ProtectedGameObject<CommandProcessor>
 {
     CRITICAL_SECTION CS_;
     uint8_t Flags;
     Queue<void*> CommandQueue;
 };
 
-struct ModManager
+struct ModManager : public ProtectedGameObject<ModManager>
 {
     void* RegisterCallback;
     Array<void*> Mods_Arr_uiModData;
 };
 
-struct WindowManager
+struct WindowManager : public ProtectedGameObject<WindowManager>
 {
     UnknownSignal FinishLoadWidgetSignal;
     UnknownSignal FinishLoadWidgetSignal2;
@@ -651,13 +751,13 @@ struct WindowManager
     TooltipManager* TooltipManager;
     ContextMenuManager* ContextMenuManager;
     StateMachine* StateMachine;
-    Array<void*> Widgets_Ptr_uiWidget;
-    Array<void*> field_128_Ptr_uiWidget;
+    Array<Noesis::Ptr<UIWidget>> Widgets;
+    Array<Noesis::Ptr<UIWidget>> field_128;
     LegacyRefMap<FixedString, void*> field_138_Map_FS_Unk;
     uint8_t field_148;
     uint8_t field_149;
     void* field_150;
-    void* InputManager;
+    input::InputManager* InputManager;
     CRITICAL_SECTION UnloadCS;
     HashMap<FixedString, void*> field_188_MHM_StateKey_DCAccum;
     Noesis::BaseCollection* field_1C8;
@@ -672,7 +772,7 @@ struct WindowManager
     UnsafeMessageQueue<void*> DelayedWidgetLoads_UnsafeMessageQueue;
 };
 
-struct StateMachine
+struct StateMachine : public ProtectedGameObject<StateMachine>
 {
     MessageBoxManager* MessageBoxManager;
     ModManager* ModManager;
@@ -687,11 +787,17 @@ struct StateMachine
     bool ApplyModsRequested;
 };
 
-struct ViewModelProviderBase
+struct ViewModelProviderBase : public ProtectedGameObject<ViewModelProviderBase>
 {
     void* VMT;
-    void* VMGameData;
+    ViewModel* VMGameData;
     HashMap<uint32_t, void*> Systems_MHM_u32_Ptr_uiSystem;
+};
+
+struct FlagHandler : public ProtectedGameObject<FlagHandler>
+{
+    HashMap<uint64_t, HashSet<EntityHandle>> DirtyHandles;
+    HashMap<uint64_t, HashSet<EntityHandle>> NextFrameDirtyHandles;
 };
 
 
@@ -727,7 +833,7 @@ struct ViewModelProvider : public ViewModelProviderBase
     void* SpellPrototypeManager;
     void* ImmutableDataHeadmaster;
     void* ActionResourceTypes;
-    void* InputManager;
+    input::InputManager* InputManager;
     void* ProgressionManager;
     void* ProgressionDescriptionManager;
     void* BoostPrototypeManager;
@@ -755,9 +861,7 @@ struct ViewModelProvider : public ViewModelProviderBase
     HashMap<EntityHandle, HashSet<ComponentHandle>> UpdatedAddedStatuses_MHM_EH_HashSet_OH;
     HashMap<EntityHandle, HashSet<ComponentHandle>> UpdatedRemovedStatuses_MHM_EH_HashSet_OH;
     HashMap<PlayerId, void*> DelayDialogueRequestSwitchCharacter_MHM_short_CharacterSwapDelayData;
-    int FlagHandler;
-    void* gapF0C;
-    uint64_t unkF18[14];
+    FlagHandler DirtyFlags;
     uint64_t qwordF88;
     uint8_t Flags;
     uint8_t Flags2;
@@ -782,11 +886,11 @@ struct ViewModelProvider : public ViewModelProviderBase
     Array<void*> TimelineEvents_Arr_TTimelineEvent;
     HashMap<PlayerId, Array<EntityHandle>> ActiveRollOpen_MHM_short_MHS_EH;
     Array<EntityHandle> SetActiveDialogue;
-    void* DeferredPredicatesManager;
+    DeferredPredicatesManager* DeferredPredicatesManager;
     Array<PlayerId> ShroudReload;
 };
 
-struct ContextMenuManagerBase
+struct ContextMenuManagerBase : public ProtectedGameObject<ContextMenuManagerBase>
 {
     void* VMT;
     HashMap<PlayerId, void*> Menus_MHM_u16_PlayerContextMenu;
@@ -798,10 +902,10 @@ struct ContextMenuManager : public ContextMenuManagerBase
     MPMCQueueBounded<PlayerId> OPOCCircularQueue_short;
 };
 
-struct DataContextProviderBase
+struct DataContextProviderBase : public ProtectedGameObject<DataContextProviderBase>
 {
     void* VMT;
-    ui::DCWidget* GlobalDataContext;
+    DCWidget* GlobalDataContext;
     LegacyRefMap<uint16_t, HashMap<FixedString, Noesis::Ptr<DCWidget>*>> CustomDC_RefMap_u16_MHM_FS_Ptr_DCWidget;
     StateMachine* StateMachine;
     ViewModelProvider* ViewModelProvider;
@@ -824,7 +928,7 @@ struct DataContextProvider : public DataContextProviderBase
     uint8_t byteF0;
 };
 
-struct DragAndDropManager
+struct DragAndDropManager : public ProtectedGameObject<DragAndDropManager>
 {
     UnknownSignal qword0;
     NoesisUIManager* NoesisUIManager;
@@ -847,7 +951,7 @@ struct DragAndDropManager
     MPMCQueueBounded<void*> field_160_Queue_TStartDraggingRequest;
 };
 
-struct TooltipManager
+struct TooltipManager : public ProtectedGameObject<TooltipManager>
 {
     void* VMT;
     UnknownFunction SignalCollection;
@@ -874,7 +978,7 @@ struct TooltipManager
     MPMCQueueBounded<std::pair<short, bool>> field_228_Queue_Pair_short_bool;
 };
 
-struct MessageBoxManager
+struct MessageBoxManager : public ProtectedGameObject<MessageBoxManager>
 {
     void* VMT;
     void* VMT2;
@@ -894,7 +998,7 @@ struct MessageBoxManager
     Array<void*> field_88_Arr_PendingMessageBox;
 };
 
-struct UINotificationManager
+struct UINotificationManager : public ProtectedGameObject<UINotificationManager>
 {
     void* VMT;
     UnknownFunction SignalCollection;
@@ -911,7 +1015,7 @@ struct UINotificationManager
     HashSet<EntityHandle> field_98;
 };
 
-struct TwitchOverlayManager
+struct TwitchOverlayManager : public ProtectedGameObject<TwitchOverlayManager>
 {
     uint64_t RequestTime;
     void* qword8;
@@ -937,7 +1041,7 @@ struct TwitchOverlayManager
     EntityHandle HttpRequest;
 };
 
-struct TutorialManager
+struct TutorialManager : public ProtectedGameObject<TutorialManager>
 {
     ViewModelProvider* ViewModelProvider;
     StateMachine* StateMachine;
@@ -950,7 +1054,7 @@ struct TutorialManager
 };
 
 
-struct GameUI
+struct GameUI : public ProtectedGameObject<GameUI>
 {
     void* VMT;
     void* InputEventListenerVMT;
@@ -979,7 +1083,7 @@ struct GameUI
     UINotificationManager NotificationManager;
     TwitchOverlayManager TwitchOverlayManager;
     TutorialManager TutorialManager;
-    void* DeferredPropertiesManager;
+    DeferredPropertiesManager* DeferredPropertiesManager;
     __int64 field_22C0;
     void* SplitscreenRequestSystem;
     int field_22D0;
@@ -1041,10 +1145,10 @@ struct GameUI
     const char* field_2e98;
     const char* field_2ea0;
     HashMap<uint32_t, void*> field_25f0_MHM_u32_pUiSystem[4];
-    Array<void*> field_26f0_ui_Event;
+    Array<UIEvent> QueuedEvents;
     Array<void*> field_2700_TDelayedOpenCombine;
-    Array<void*> field_2710_FireEventDesc;
-    Array<void*> field_2720_InputEvent;
+    Array<input::FireEventDesc> QueuedFireEvents;
+    Array<input::InputEvent> QueuedInputEvents;
     CRITICAL_SECTION EventsCS_;
     CRITICAL_SECTION UpdateCS_;
     CRITICAL_SECTION RenderCS_;
@@ -1100,34 +1204,23 @@ struct DeferredCommand : public BaseCommand
 
 struct ViewModel : public Noesis::BaseComponent, public INotifyPropertyChanged
 {
+    Noesis::Delegate<void ()> UnknownDelegate;
 };
 
 struct DCWidget : public ViewModel
 {
-    /*__int64 VMT3;
-    __int64 field_20;
-    __int64 field_28;
-    __int64 field_30;
-    uint8_t field_38;
-    UIManager_Sub168 field_40;
-    Array<void*> field_58;
-    bool field_68;
-    bool field_69;
-    DCWidget* pThis;
-    Noesis::String Name;
-    Symbol NameSymbol;
-    DCWidget* pThis2;
-    uint8_t Layout;
-    Symbol LayoutSymbol;
-    __int64 field_B0;
-    Array<UnknownSignal> field_B8;
-    __int64 field_C8;
-    __int64 field_D0;
+    CommandProcessor CommandProcessor;
+    DeferredProperty<Noesis::String> NameProperty;
+    DeferredProperty<uint8_t> LayoutProperty;
+    DeferredProperty<bool> IsInitializedProperty;
+    UnknownSignal field_E8;
+    StateMachine* StateMachine;
     PlayerId PlayerId;
-    ui::DeferredCommand* CustomEvent;
-    ui::DeferredCommand* OpenMessageBox;
-    ui::DeferredCommand* PasteFromClipboardToTextBoxCommand;
-    __int64 field_F8;*/
+    uint8_t Owner;
+    DeferredCommand* DeferredCommand1;
+    DeferredCommand* DeferredCommand2;
+    Noesis::Delegate<void ()> NotifyWidgetClosing;
+    ViewModelProvider* ViewModelProvider;
 };
 
 struct CustomPropertyDefn
