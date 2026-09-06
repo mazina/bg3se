@@ -226,15 +226,15 @@ void GenomeVariant::LuaSetValue(GenomeVarTypeDesc* type, lua_State* L, int index
         SetValue<glm::mat4>(L, index);
     } else if (type->TypeName == GFS.strFloatSet) {
         SetValue<TGenomeSet<float>>(L, index);
-    } else if (Type->TypeName == GFS.strIntSet) {
+    } else if (type->TypeName == GFS.strIntSet) {
         SetValue<TGenomeSet<int32_t>>(L, index);
-    } else if (Type->TypeName == GFS.strShortNameSet) {
+    } else if (type->TypeName == GFS.strShortNameSet) {
         SetValue<TGenomeSet<FixedString>>(L, index);
-    } else if (Type->TypeName == GFS.strStringSet) {
+    } else if (type->TypeName == GFS.strStringSet) {
         SetValue<TGenomeSet<STDString>>(L, index);
-    } else if (Type->TypeName == GFS.strFixedStringSet) {
+    } else if (type->TypeName == GFS.strFixedStringSet) {
         SetValue<TGenomeSet<FixedString>>(L, index);
-    } else if (Type->TypeName == GFS.strTimelineData) {
+    } else if (type->TypeName == GFS.strTimelineData) {
         SetValue<GenomeTimelineData>(L, index);
     } else {
         luaL_error(L, "Assignment not supported for this Genome type: %s", type->TypeName.GetString());

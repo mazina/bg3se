@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GameDefinitions/AllSparkShared.h>
+#include <GameDefinitions/MaterialParameters.h>
 #include <GameDefinitions/Resources.h>
 
 BEGIN_SE()
@@ -198,40 +199,40 @@ struct VirtualTextureBindingData
     std::array<VirtualTextureShaderParamBinding, 15> PerShaderVTBindings;
 };
 
-struct ScalarParameter : public resource::MaterialResource::ScalarParameter
+struct ScalarParameterInstance : public material::ScalarResourceParameter
 {
     [[bg3::hidden]] UniformBindingData Binding;
 };
 
-struct Vector2Parameter : public resource::MaterialResource::Vector2Parameter
+struct Vector2ParameterInstance : public material::Vector2ResourceParameter
 {
     [[bg3::hidden]] UniformBindingData Binding;
 };
 
-struct Vector3Parameter : public resource::MaterialResource::Vector3Parameter
+struct Vector3ParameterInstance : public material::Vector3ResourceParameter
 {
     [[bg3::hidden]] UniformBindingData Binding;
 };
 
-struct Vector4Parameter : public resource::MaterialResource::Vector4Parameter
+struct Vector4ParameterInstance : public material::Vector4ResourceParameter
 {
     [[bg3::hidden]] UniformBindingData Binding;
     [[bg3::hidden]] uint64_t _Padding3;
 };
 
-struct Texture2DParameter : public resource::MaterialResource::Texture2DParameter
+struct Texture2DParameterInstance : public material::Texture2DResourceParameter
 {
     [[bg3::hidden]] TextureBindingData Binding;
 };
 
-struct SamplerStateParameter : public resource::MaterialResource::Parameter
+struct SamplerStateParameterInstance : public material::ResourceParameter
 {
     uint8_t TextureFilterOverride;
     uint8_t TextureAddressMode;
     [[bg3::hidden]] TextureBindingData Binding;
 };
 
-struct VirtualTextureParameter : public resource::MaterialResource::VirtualTextureParameter
+struct VirtualTextureParameterInstance : public material::VirtualTextureResourceParameter
 {
     [[bg3::hidden]] VirtualTextureBindingData Binding;
 };
@@ -239,13 +240,13 @@ struct VirtualTextureParameter : public resource::MaterialResource::VirtualTextu
 struct MaterialParameters
 {
     Material* Material;
-    TrackedCompactSet<ScalarParameter> ScalarParameters;
-    TrackedCompactSet<Vector2Parameter> Vector2Parameters;
-    TrackedCompactSet<Vector3Parameter> Vector3Parameters;
-    TrackedCompactSet<Vector4Parameter> VectorParameters;
-    TrackedCompactSet<Texture2DParameter> Texture2DParameters;
-    TrackedCompactSet<SamplerStateParameter> SamplerStateParameters;
-    Array<VirtualTextureParameter> VirtualTextureParameters;
+    TrackedCompactSet<ScalarParameterInstance> ScalarParameters;
+    TrackedCompactSet<Vector2ParameterInstance> Vector2Parameters;
+    TrackedCompactSet<Vector3ParameterInstance> Vector3Parameters;
+    TrackedCompactSet<Vector4ParameterInstance> VectorParameters;
+    TrackedCompactSet<Texture2DParameterInstance> Texture2DParameters;
+    TrackedCompactSet<SamplerStateParameterInstance> SamplerStateParameters;
+    Array<VirtualTextureParameterInstance> VirtualTextureParameters;
 };
 
 struct Material : public ProtectedGameObject<Material>
@@ -354,10 +355,6 @@ struct AppliedMaterialQueuedParametersContainer : public MaterialParameters
 
 struct AppliedMaterial
 {
-    using LoadTextureProc = TextureDescriptor * (void* self, FixedString const& textureGuid);
-    using LoadVirtualTextureProc = void* (void* self, FixedString const& textureGuid);
-    using TryOverrideTexture2DParameterProc = bool (void* self, FixedString const& param, FixedString const& textureGuid);
-
     struct Texture2DParam
     {
         [[bg3::hidden]] void* TextureResource;
@@ -435,8 +432,6 @@ struct AppliedMaterial
 struct Visual : public MoveableObject
 {
     static constexpr uint32_t StaticRTTI = 0x1001;
-
-    using UpdateBlendshapeWeightsFromSkeletonProc = void(Visual* self);
 
     virtual bool AddObject(RenderableObject*, uint8_t flags) = 0;
     virtual void SetLODDistances(RenderableObject*) const = 0;

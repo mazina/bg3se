@@ -106,7 +106,7 @@ struct RNG
 struct PreParsedDataBuffer
 {
     ScratchString Buf;
-    FixedString Name;
+    FixedString Type;
     void* field_28;
 };
 
@@ -122,9 +122,6 @@ struct BloodType
 
 struct RPGStats : public ProtectedGameObject<RPGStats>
 {
-    using LoadProc = void(RPGStats* self, Array<STDString>* paths);
-    using ParseStructureFolderProc = void(RPGStats* self, Array<STDString>* paths);
-
     struct VMTMappings
     {
         bool VMTsMapped{ false };

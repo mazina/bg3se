@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GameDefinitions/Render.h>
+
 BEGIN_SE()
 
 struct LevelComponent : public BaseComponent

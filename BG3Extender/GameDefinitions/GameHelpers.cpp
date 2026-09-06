@@ -4,8 +4,10 @@
 #include <GameDefinitions/Symbols.h>
 #include <Lua/Shared/Proxies/LuaPropertyMapHelpers.h>
 #include <Extender/ScriptExtender.h>
+#include <GameDefinitions/Animation.h>
 #include <GameDefinitions/Resources.h>
 #include <GameDefinitions/Dialog.h>
+#include <GameDefinitions/Level.h>
 #include <GameDefinitions/Stats/UseActions.h>
 #include <GameDefinitions/Stats/Functors.h>
 #include <GameDefinitions/Components/ServerData.h>
@@ -211,15 +213,9 @@ namespace bg3se
         return nullptr;
     }
 
-    static bool CharacterGetSelfCalled{ false };
-
     RefReturn<esv::Character> esv::Character::LuaGetSelf() const
     {
-        if (!CharacterGetSelfCalled) {
-            CharacterGetSelfCalled = true;
-            WARN("entity.ServerCharacter.Character is deprecated; use entity.ServerCharacter instead");
-        }
-
+        WARN_ONCE("entity.ServerCharacter.Character is deprecated; use entity.ServerCharacter instead");
         return const_cast<esv::Character*>(this);
     }
 
@@ -227,11 +223,7 @@ namespace bg3se
 
     RefReturn<esv::Item> esv::Item::LuaGetSelf() const
     {
-        if (!ItemGetSelfCalled) {
-            ItemGetSelfCalled = true;
-            WARN("entity.ServerItem.Item is deprecated; use entity.ServerItem instead");
-        }
-
+        WARN_ONCE("entity.ServerItem.Item is deprecated; use entity.ServerItem instead");
         return const_cast<esv::Item*>(this);
     }
 
@@ -1068,7 +1060,7 @@ std::optional<glm::vec4> AppliedMaterial::GetVector4(FixedString const& paramNam
 bool AppliedMaterial::SetScalar(FixedString const& paramName, float value)
 {
     if ((bool)(Flags & AppliedMaterialFlags::Queued)) {
-        ScalarParameter param;
+        ScalarParameterInstance param;
         param.ParameterName = paramName;
         param.Value = value;
         QueuedParameters->ScalarParameters.push_back(param);
@@ -1089,7 +1081,7 @@ bool AppliedMaterial::SetScalar(FixedString const& paramName, float value)
 bool AppliedMaterial::SetVector2(FixedString const& paramName, glm::vec2 value)
 {
     if ((bool)(Flags & AppliedMaterialFlags::Queued)) {
-        Vector2Parameter param;
+        Vector2ParameterInstance param;
         param.ParameterName = paramName;
         param.Value = value;
         QueuedParameters->Vector2Parameters.push_back(param);
@@ -1110,7 +1102,7 @@ bool AppliedMaterial::SetVector2(FixedString const& paramName, glm::vec2 value)
 bool AppliedMaterial::SetVector3(FixedString const& paramName, glm::vec3 value)
 {
     if ((bool)(Flags & AppliedMaterialFlags::Queued)) {
-        Vector3Parameter param;
+        Vector3ParameterInstance param;
         param.ParameterName = paramName;
         param.Value = value;
         QueuedParameters->Vector3Parameters.push_back(param);
@@ -1131,7 +1123,7 @@ bool AppliedMaterial::SetVector3(FixedString const& paramName, glm::vec3 value)
 bool AppliedMaterial::SetVector4(FixedString const& paramName, glm::vec4 value)
 {
     if ((bool)(Flags & AppliedMaterialFlags::Queued)) {
-        Vector4Parameter param;
+        Vector4ParameterInstance param;
         param.ParameterName = paramName;
         param.Value = value;
         QueuedParameters->VectorParameters.push_back(param);
@@ -1158,7 +1150,7 @@ bool AppliedMaterial::SetTexture2D(FixedString const& param, FixedString const& 
 bool AppliedMaterial::SetVirtualTexture(FixedString const& paramName, FixedString const& texture)
 {
     if ((bool)(Flags & AppliedMaterialFlags::Queued)) {
-        VirtualTextureParameter param;
+        VirtualTextureParameterInstance param;
         param.ParameterName = paramName;
         param.ID = texture;
         QueuedParameters->VirtualTextureParameters.push_back(param);

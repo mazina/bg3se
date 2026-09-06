@@ -1,3 +1,4 @@
+#include <GameDefinitions/Stats/Prototype.h>
 #include <Lua/Shared/LuaStats.h>
 #include <Lua/Libs/StatFunctors.inl>
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GameDefinitions/Level.h>
 #include <GameDefinitions/RootTemplates.h>
 #include <Extender/ScriptExtender.h>
 

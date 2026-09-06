@@ -2,6 +2,7 @@
 
 #include <GameDefinitions/Base/Base.h>
 #include <GameDefinitions/Symbols.h>
+#include <GameDefinitions/Stats/Prototype.h>
 #include <Extender/Shared/ScriptHelpers.h>
 #include <Extender/ScriptExtender.h>
 
@@ -118,7 +119,7 @@ bool PassivePrototypeManager::SyncStat(Object* object, PassivePrototype* proto)
     proto->StatsFunctorContext = 0;
     proto->ToggleOffContext = 0;
     proto->BoostContext = 0;
-    proto->Boosts_SV.clear();
+    proto->Boosts.clear();
 
     sync(proto, object);
     return true;

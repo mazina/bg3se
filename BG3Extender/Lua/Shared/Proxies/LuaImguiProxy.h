@@ -20,8 +20,8 @@ public:
         lua_push_cppvalue(L, MetaTag, 0, object->Handle);
     }
 
-    static GenericPropertyMap& GetPropertyMap(CppObjectMetadata const& meta);
-    static extui::Renderable* GetRenderable(CppObjectMetadata const& meta);
+    static GenericPropertyMap& GetPropertyMap(lua_State* L, CppObjectMetadata const& meta);
+    static extui::Renderable* GetRenderable(lua_State* L, CppObjectMetadata const& meta);
     static extui::Renderable* TryGetGeneric(lua_State* L, int index, extui::IMGUIObjectType type);
     static extui::Renderable* GetGeneric(lua_State* L, int index, extui::IMGUIObjectType type);
     static extui::Renderable* GetGeneric(lua_State* L, int index);

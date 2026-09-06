@@ -58,7 +58,7 @@ TypeInformation const* GetCppObjectType(lua_State * L, int index)
 
     case MetatableTag::ImguiObject:
     {
-        auto obj = ImguiObjectProxyMetatable::GetRenderable(meta);
+        auto obj = ImguiObjectProxyMetatable::GetRenderable(L, meta);
         if (obj != nullptr) {
             return obj->GetRTTI().TypeInfo;
         } else {

@@ -375,7 +375,7 @@ namespace bg3se::lua::dbg
     {
         StackCheck _(L);
 
-        auto obj = ImguiObjectProxyMetatable::GetRenderable(meta);
+        auto obj = ImguiObjectProxyMetatable::GetRenderable(L, meta);
         if (obj == nullptr) return;
 
         auto& pm = obj->GetRTTI();

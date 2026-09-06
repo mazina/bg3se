@@ -22,6 +22,9 @@ namespace Noesis
 
 BEGIN_SE()
 
+struct ID3D11ShaderResourceView;
+struct ID3D11Resource;
+
 struct LegacyPropertyMapBase;
 
 struct GameObjectTemplate;
@@ -64,14 +67,26 @@ struct LevelCacheTemplateManager;
 struct AiGrid;
 struct AiPath;
 
+struct TextKeyTypeProperties;
+struct Lighting;
+struct TLAutomatedLight;
+
+struct AppliedMaterial;
+struct TextureManager;
+struct ResourceBank;
+struct ResourceManager;
+struct TextureAtlasMap;
+
 struct BoundComponent;
 struct UuidComponent;
 struct UuidToHandleMappingComponent;
 
 union TextureDescriptor;
+struct MeshBinding;
 struct Scene;
 struct MoveableObject;
 struct RenderableObject;
+struct DecalObject;
 struct Visual;
 struct Scene;
 struct Material;
@@ -83,6 +98,11 @@ struct SkeletonSocket;
 
 struct SoundManager;
 struct WwiseManager;
+struct GameStateEventManager;
+struct DynamicStatsExpressionManager;
+struct GlobalSwitches;
+struct App;
+
 class SDLManager;
 
 class ExtensionStateBase;
@@ -94,9 +114,11 @@ namespace resource
     struct GuidResourceManager;
 
     struct Resource;
+    struct AnimationBlueprintResource;
     struct VisualSet;
     struct EffectResource;
     struct TextureResource;
+    struct VisualResource;
 }
 
 namespace net
@@ -148,6 +170,18 @@ namespace stats
     struct TreasureTable;
     struct TreasureSubTable;
     struct TreasureCategory;
+    struct RPGStats;
+
+    struct SpellPrototype;
+    struct StatusPrototype;
+    struct PassivePrototype;
+    struct InterruptPrototype;
+
+    struct SpellPrototypeManager;
+    struct StatusPrototypeManager;
+    struct BoostPrototypeManager;
+    struct PassivePrototypeManager;
+    struct InterruptPrototypeManager;
 }
 
 namespace esv
@@ -155,6 +189,7 @@ namespace esv
     struct Item;
     struct Character;
     struct Level;
+    struct LevelManager;
 
     struct Status;
     struct StatusMachine;
@@ -171,6 +206,8 @@ namespace esv
     struct Surface;
     struct SurfaceAction;
     struct SurfaceManager;
+    struct SavegameManager;
+    struct EoCServer;
 
     class ExtensionState;
 
@@ -185,11 +222,14 @@ namespace ecl
     struct Item;
     struct Character;
     struct Level;
+    struct LevelManager;
     struct Status;
     struct StatusMachine;
     struct CursorControl;
     struct DragDropManager;
     struct InputController;
+    struct EoCClient;
+
     class ExtensionState;
 
     namespace lua
@@ -248,7 +288,7 @@ namespace phx
 
 namespace ui
 {
-    struct UIManager;
+    struct GameUI;
 }
 
 namespace extui

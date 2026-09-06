@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GameDefinitions/Hit.h>
+
 BEGIN_NS(status)
 
 struct ContainerComponent : public BaseComponent

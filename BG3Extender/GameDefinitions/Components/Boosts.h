@@ -4,6 +4,7 @@
 #include <GameDefinitions/EntitySystem.h>
 #include <GameDefinitions/Misc.h>
 #include <GameDefinitions/Components/Status.h>
+#include <GameDefinitions/Components/Spell.h>
 
 BEGIN_SE()
 

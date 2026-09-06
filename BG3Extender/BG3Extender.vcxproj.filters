@@ -538,6 +538,10 @@
     <ClInclude Include="GameDefinitions\Base\Lock.h" />
     <ClInclude Include="GameDefinitions\ObjectFactory.h" />
     <ClInclude Include="GameDefinitions\Stats\Entries.h" />
+    <ClInclude Include="GameHooks\EngineHooksFwdDecl.h" />
+    <ClInclude Include="GameDefinitions\FileReader.h" />
+    <ClInclude Include="GameDefinitions\MaterialParameters.h" />
+    <ClInclude Include="GameDefinitions\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BG3Extender.rc" />
@@ -806,6 +810,9 @@
       <Filter>GameDefinitions\Base</Filter>
     </None>
     <None Include="GameDefinitions\Surface.inl">
+      <Filter>GameDefinitions</Filter>
+    </None>
+    <None Include="GameDefinitions\Symbols.inl">
       <Filter>GameDefinitions</Filter>
     </None>
   </ItemGroup>

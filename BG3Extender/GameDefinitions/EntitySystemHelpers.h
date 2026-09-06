@@ -14,12 +14,6 @@ enum class TypeIdContext
     ImmutableData
 };
 
-struct IndexSymbolInfo
-{
-    char const* name;
-    int32_t* context;
-};
-
 enum class RuntimeCheckLevel
 {
     // No property map validation

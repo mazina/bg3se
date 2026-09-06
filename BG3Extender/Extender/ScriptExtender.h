@@ -153,9 +153,9 @@ public:
     enum class CoreLibInitTag {};
     WrappableFunction<CoreLibInitTag, CoreLibInitProc> CoreLibInit;
     enum class AppUpdatePathsTag {};
-    WrappableFunction<AppUpdatePathsTag, AppUpdatePathsProc> AppUpdatePaths;
+    WrappableFunction<AppUpdatePathsTag, App__UpdatePathsProc> AppUpdatePaths;
     enum class AppLoadGraphicSettingsTag {};
-    WrappableFunction<AppLoadGraphicSettingsTag, App::LoadGraphicSettingsProc> AppLoadGraphicSettings;
+    WrappableFunction<AppLoadGraphicSettingsTag, App__LoadGraphicSettingsProc> AppLoadGraphicSettings;
 
 private:
     esv::ScriptExtender server_;
@@ -189,16 +189,16 @@ private:
 
     void WarnIfOffline();
     void OnCoreLibInit(void * self);
-    void OnAppUpdatePaths(void * self);
+    void OnAppUpdatePaths(App* self);
     void OnAppLoadGraphicSettings(App* self);
     void HookStateMachineUpdates();
-    void OnStatsLoad(stats::RPGStats::LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths);
-    void OnStatsLoadGuarded(stats::RPGStats::LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths);
-    void OnECSUpdate(ecs::EntityWorld::UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time);
-    void OnECSUpdateGuarded(ecs::EntityWorld::UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time);
+    void OnStatsLoad(stats::RPGStats__LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths);
+    void OnStatsLoadGuarded(stats::RPGStats__LoadProc* wrapped, stats::RPGStats* mgr, Array<STDString>* paths);
+    void OnECSUpdate(ecs::EntityWorld__UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time);
+    void OnECSUpdateGuarded(ecs::EntityWorld__UpdateProc* wrapped, ecs::EntityWorld* entityWorld, GameTime const& time);
     void OnECSFlushECBs(ecs::EntityWorld* entityWorld);
     void OnFindPath(AiGrid* self, AiPathId pathId);
-    FileReader * OnFileReaderCreate(FileReader::CtorProc* next, FileReader * self, Path const& path, unsigned int type, unsigned int unknown);
+    FileReader * OnFileReaderCreate(FileReader__CtorProc* next, FileReader * self, Path const& path, unsigned int type, unsigned int unknown);
 };
 
 extern std::unique_ptr<ScriptExtender> gExtender;

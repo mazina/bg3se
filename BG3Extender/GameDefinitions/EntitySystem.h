@@ -837,9 +837,6 @@ struct ECBExecutor
 
 struct EntityWorld : public ProtectedGameObject<EntityWorld>
 {
-    using UpdateProc = void (EntityWorld* self, GameTime const& time);
-    using FlushECBsProc = bool (EntityWorld* self);
-
     SyncBuffers* Replication;
     ComponentRegistry ComponentRegistry_;
     SystemRegistry Systems;

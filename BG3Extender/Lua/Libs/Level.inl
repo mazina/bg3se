@@ -1,5 +1,6 @@
 #include <GameDefinitions/Ai.h>
 #include <Lua/Libs/Level.h>
+#include <GameDefinitions/Level.h>
 #include <GameDefinitions/Physics.h>
 #include <GameDefinitions/Surface.h>
 
@@ -257,13 +258,28 @@ bool filterfunc(phx::PhysicsShape const* obj)
     return true;
 }
 
+phx::PhysicsSceneBase* GetPhysicsScene(lua_State* L)
+{
+    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
+    auto level = levelManager->CurrentLevel;
+    phx::PhysicsSceneBase* phys{ nullptr };
+    if (level) {
+        phys = level->PhysicsScene;
+    }
+
+    if (!phys) {
+        luaL_error(L, "No level loaded - physics scene unavailable");
+    }
+
+    return phys;
+}
+
 phx::PhysicsHit gHit;
 phx::PhysicsHitAll gHits;
 
 phx::PhysicsHit* RaycastClosest(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     auto callback = MakeFunction(&filterfunc);
     gHit = phx::PhysicsHit{};
     auto xhit = phys->RaycastClosest(source, destination, gHit, physicsType, includePhysicsGroup, excludePhysicsGroup, context , -1, -1, &callback);
@@ -276,8 +292,7 @@ phx::PhysicsHit* RaycastClosest(lua_State* L, glm::vec3 const& source, glm::vec3
 
 phx::PhysicsHitAll* RaycastAll(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHits = phx::PhysicsHitAll{};
     auto xhit = phys->RaycastAll(source, destination, gHits, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1, {});
     return &gHits;
@@ -285,15 +300,13 @@ phx::PhysicsHitAll* RaycastAll(lua_State* L, glm::vec3 const& source, glm::vec3 
 
 bool RaycastAny(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     return phys->RaycastAny(source, destination, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1, {});
 }
 
 phx::PhysicsHit* SweepSphereClosest(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, float radius, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHit = phx::PhysicsHit{};
     auto xhit = phys->SweepSphereClosest(radius, source, destination, gHit, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1);
     if (xhit) {
@@ -305,8 +318,7 @@ phx::PhysicsHit* SweepSphereClosest(lua_State* L, glm::vec3 const& source, glm::
 
 phx::PhysicsHit* SweepCapsuleClosest(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, float radius, float halfHeight, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHit = phx::PhysicsHit{};
     auto xhit = phys->SweepCapsuleClosest(radius, halfHeight, source, destination, gHit, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1);
     if (xhit) {
@@ -318,8 +330,7 @@ phx::PhysicsHit* SweepCapsuleClosest(lua_State* L, glm::vec3 const& source, glm:
 
 phx::PhysicsHit* SweepBoxClosest(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, glm::vec3 const& extents, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHit = phx::PhysicsHit{};
     auto xhit = phys->SweepBoxClosest(extents, source, destination, gHit, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1);
     if (xhit) {
@@ -331,8 +342,7 @@ phx::PhysicsHit* SweepBoxClosest(lua_State* L, glm::vec3 const& source, glm::vec
 
 phx::PhysicsHitAll* SweepSphereAll(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, float radius, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHits = phx::PhysicsHitAll{};
     auto xhit = phys->SweepSphereAll(radius, source, destination, gHits, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1);
     if (xhit) {
@@ -344,8 +354,7 @@ phx::PhysicsHitAll* SweepSphereAll(lua_State* L, glm::vec3 const& source, glm::v
 
 phx::PhysicsHitAll* SweepCapsuleAll(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, float radius, float halfHeight, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHits = phx::PhysicsHitAll{};
     auto xhit = phys->SweepCapsuleAll(radius, halfHeight, source, destination, gHits, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1);
     if (xhit) {
@@ -357,8 +366,7 @@ phx::PhysicsHitAll* SweepCapsuleAll(lua_State* L, glm::vec3 const& source, glm::
 
 phx::PhysicsHitAll* SweepBoxAll(lua_State* L, glm::vec3 const& source, glm::vec3 const& destination, glm::vec3 const& extents, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup, int context)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHits = phx::PhysicsHitAll{};
     auto xhit = phys->SweepBoxAll(extents, source, destination, gHits, physicsType, includePhysicsGroup, excludePhysicsGroup, context, -1, -1);
     if (xhit) {
@@ -370,8 +378,7 @@ phx::PhysicsHitAll* SweepBoxAll(lua_State* L, glm::vec3 const& source, glm::vec3
 
 phx::PhysicsHitAll* TestBox(lua_State* L, glm::vec3 const& position, glm::vec3 const& extents, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHits = phx::PhysicsHitAll{};
     auto xhit = phys->TestBox(extents, position, gHits, physicsType, includePhysicsGroup, excludePhysicsGroup);
     if (xhit) {
@@ -383,8 +390,7 @@ phx::PhysicsHitAll* TestBox(lua_State* L, glm::vec3 const& position, glm::vec3 c
 
 phx::PhysicsHitAll* TestSphere(lua_State* L, glm::vec3 const& position, float radius, PhysicsType physicsType, PhysicsGroupFlags includePhysicsGroup, PhysicsGroupFlags excludePhysicsGroup)
 {
-    auto levelManager = State::FromLua(L)->GetExtensionState().GetLevelManager();
-    auto phys = levelManager->CurrentLevel->PhysicsScene;
+    auto phys = GetPhysicsScene(L);
     gHits = phx::PhysicsHitAll{};
     auto xhit = phys->TestSphere(position, radius, gHits, physicsType, includePhysicsGroup, excludePhysicsGroup);
     if (xhit) {

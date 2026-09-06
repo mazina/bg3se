@@ -177,7 +177,7 @@ struct [[bg3::hidden]] PhysicsSceneBase : ProtectedGameObject<PhysicsSceneBase>
     virtual void ProfileStepOut() = 0;
     virtual void ProfileStepInto(int) = 0;
     virtual void ProfileDump(char*, int) = 0;
-    virtual void CalculateBound(Bound&, uint32_t physicsGroup, Array<PhysicsShape*>*) = 0;
+    virtual void CalculateBound(AABound&, uint32_t physicsGroup, Array<PhysicsShape*>*) = 0;
     virtual void CalculateAaBbBound(glm::vec3& min, glm::vec3& max, uint32_t physicsGroup, Array<PhysicsShape*>*) = 0;
     virtual PhysicsSceneReadLock * InstantiateReadLock2() = 0;
     virtual bool VMT_110() = 0;

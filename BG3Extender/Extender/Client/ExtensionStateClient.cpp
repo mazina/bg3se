@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include <Extender/Client/ExtensionStateClient.h>
+#include <GameDefinitions/Level.h>
 #include <GameDefinitions/Symbols.h>
 #include <Extender/ScriptExtender.h>
 

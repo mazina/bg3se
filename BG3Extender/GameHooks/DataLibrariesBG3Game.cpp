@@ -53,7 +53,7 @@ namespace bg3se
         auto contextPtr = (int32_t*)AsmResolveInstructionRef(ptr);
         auto indexPtr = (int32_t*)AsmResolveInstructionRef(ptr + 0x1C);
         auto namePtr = (char const*)AsmResolveInstructionRef(ptr + 0x46);
-        GetStaticSymbols().IndexSymbolToNameMaps.insert(std::make_pair(indexPtr, ecs::IndexSymbolInfo{ namePtr, contextPtr }));
+        GetStaticSymbols().IndexSymbolToNameMaps.insert(std::make_pair(indexPtr, IndexSymbolInfo{ namePtr, contextPtr }));
         return SymbolMapper::MappingResult::TryNext;
     }
 
@@ -73,7 +73,7 @@ namespace bg3se
 
         auto nameIt = GetStaticSymbols().StaticStringRegistrantMaps.find(funcPtr);
         if (nameIt != GetStaticSymbols().StaticStringRegistrantMaps.end()) {
-            GetStaticSymbols().IndexSymbolToNameMaps.insert(std::make_pair(indexPtr, ecs::IndexSymbolInfo{ nameIt->second, contextPtr }));
+            GetStaticSymbols().IndexSymbolToNameMaps.insert(std::make_pair(indexPtr, IndexSymbolInfo{ nameIt->second, contextPtr }));
         }
 
         return SymbolMapper::MappingResult::TryNext;
@@ -84,7 +84,7 @@ namespace bg3se
         auto contextPtr = (int32_t*)AsmResolveInstructionRef(ptr);
         auto indexPtr = (int32_t*)AsmResolveInstructionRef(ptr + 0x7);
         auto namePtr = (char const*)AsmResolveInstructionRef(ptr + 0x31);
-        GetStaticSymbols().IndexSymbolToNameMaps.insert(std::make_pair(indexPtr, ecs::IndexSymbolInfo{ namePtr, contextPtr }));
+        GetStaticSymbols().IndexSymbolToNameMaps.insert(std::make_pair(indexPtr, IndexSymbolInfo{ namePtr, contextPtr }));
         return SymbolMapper::MappingResult::TryNext;
     }
 
@@ -190,7 +190,7 @@ namespace bg3se
 
         SYM_OFF(gRPGStats);
         SYM_OFF(RPGStats__Load);
-        SYM_OFF(RPGStats__PreParseDataFolder);
+        SYM_OFF(RPGStats__ParseDataBuffers);
         SYM_OFF(stats__Object__SetPropertyString);
 
         SYM_OFF(esv__LevelManager);
@@ -200,6 +200,7 @@ namespace bg3se
 
         SYM_OFF(esv__gSurfaceActionFactory);
         SYM_OFF(esv__SurfaceActionFactory__DoCreateAction);
+        SYM_OFF(esv__TransformSurfaceAction__Init);
 
         SYM_OFF(eoc__AiGrid__FindPath);
         SYM_OFF(eoc__AiGrid__FindPathImmediate);
@@ -221,6 +222,8 @@ namespace bg3se
         SYM_OFF(Noesis__Visual__PointFromScreen);
         SYM_OFF(Noesis__Visual__PointToScreen);
         SYM_OFF(Noesis__VisualTreeHelper__HitTest);
+
+        SYM_OFF(ui__DataContextProvider__ExecuteCommandQueues);
 
         SYM_OFF(AppInstance);
 

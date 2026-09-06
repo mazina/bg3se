@@ -1,15 +1,9 @@
 #pragma once
 
 #include <GameDefinitions/Base/Base.h>
-#include <GameDefinitions/EntitySystem.h>
-#include <GameDefinitions/Animation.h>
 #include <GameDefinitions/AllSparkShared.h>
-#include <GameDefinitions/Lighting.h>
-#include <GameDefinitions/Components/Camera.h>
-#include <Lua/LuaHelpers.h>
-#include <d3d11.h>
-#include <synchapi.h>
-#include <variant>
+#include <GameDefinitions/Camera.h>
+#include <GameDefinitions/MaterialParameters.h>
 
 BEGIN_SE()
 
@@ -249,8 +243,6 @@ struct [[bg3::hidden]] TrackedTexture
 
 struct [[bg3::hidden]] TextureManager
 {
-    using UnloadTextureProc = bool (TextureManager* self, FixedString const& textureGuid);
-
     SRWLOCK Lock;
     HashMap<TextureDescriptor*, FixedString> Names;
     HashMap<FixedString, TrackedTexture*> Textures;
@@ -347,8 +339,8 @@ struct [[bg3::hidden]] ResourceManager
     Array<void*> VisualLoaders;
     LegacyMap<FixedString, void*> GenomeAnimationManagers;
     gn::GenomeTypeManager* GenomeTypeManager;
-    ui::UIManager* UIManager;
-    ui::UIManager* UIManagerSwap;
+    ui::GameUI* UI;
+    ui::GameUI* UISwap;
 };
 
 END_SE()
@@ -418,65 +410,6 @@ struct LoadableResource : public Resource
 
 struct PresetData
 {
-    struct ScalarParameter
-    {
-        FixedString Parameter;
-        float Value;
-        bool Enabled;
-        bool Color;
-        bool Custom;
-        [[bg3::hidden]] __int8 field_b;
-    };
-
-    struct Vector2Parameter
-    {
-        FixedString Parameter;
-        glm::fvec2 Value;
-        bool Enabled;
-        bool Color;
-        bool Custom;
-        [[bg3::hidden]] __int8 field_f;
-    };
-
-    struct Vector3Parameter
-    {
-        FixedString Parameter;
-        Vector3 Value;
-        bool Enabled;
-        bool Color;
-        bool Custom;
-        [[bg3::hidden]] __int8 field_13;
-    };
-
-    struct VectorParameter
-    {
-        FixedString Parameter;
-        glm::aligned_vec4 Value;
-        bool Enabled;
-        bool Color;
-        bool Custom;
-    };
-
-    struct Texture2DParameter
-    {
-        FixedString Parameter;
-        FixedString Value;
-        bool Enabled;
-        bool Color;
-        bool Custom;
-        [[bg3::hidden]] __int8 field_b;
-    };
-
-    struct VirtualTextureParameter
-    {
-        FixedString Parameter;
-        FixedString Value;
-        bool Enabled;
-        bool Color;
-        bool Custom;
-        [[bg3::hidden]] __int8 field_b;
-    };
-
     struct Mapped
     {
         FixedString GroupName;
@@ -486,12 +419,12 @@ struct PresetData
         [[bg3::hidden]] int16_t field_a;
     };
 
-    Array<ScalarParameter> ScalarParameters;
-    Array<Vector2Parameter> Vector2Parameters;
-    Array<Vector3Parameter> Vector3Parameters;
-    Array<VectorParameter> VectorParameters;
-    Array<Texture2DParameter> Texture2DParameters;
-    Array<VirtualTextureParameter> VirtualTextureParameters;
+    Array<material::ScalarParameterPreset> ScalarParameters;
+    Array<material::Vector2ParameterPreset> Vector2Parameters;
+    Array<material::Vector3ParameterPreset> Vector3Parameters;
+    Array<material::VectorParameterPreset> VectorParameters;
+    Array<material::Texture2DParameterPreset> Texture2DParameters;
+    Array<material::VirtualTextureParameterPreset> VirtualTextureParameters;
     FixedString MaterialResource;
     [[bg3::hidden]] __int32 field_64;
 
@@ -877,56 +810,13 @@ struct LightingResource : public LoadableResource
 
 struct MaterialResource : public TwoStepLoadableResource
 {
-    struct Parameter
-    {
-        FixedString ParameterName;
-        bool Enabled{ true };
-    };
-    
-    struct ScalarParameter : public Parameter
-    {
-        float Value{ .0f };
-        float BaseValue{ .0f };
-    };
-
-    struct Vector2Parameter : public Parameter
-    {
-        glm::fvec2 Value{ .0f };
-        glm::fvec2 BaseValue{ .0f };
-    };
-
-    struct Vector3Parameter : public Parameter
-    {
-        glm::fvec3 Value{ .0f };
-        glm::fvec3 BaseValue{ .0f };
-        bool IsColor{ false };
-    };
-
-    struct Vector4Parameter : public Parameter
-    {
-        glm::aligned_vec4 Value{ .0f };
-        glm::aligned_vec4 BaseValue{ .0f };
-        bool IsColor{ false };
-    };
-
-    struct Texture2DParameter : public Parameter
-    {
-        FixedString ID;
-    };
-
-    struct VirtualTextureParameter : public Parameter
-    {
-        int32_t Index{ 0 };
-        FixedString ID;
-    };
-
     Material* Instance;
-    TrackedCompactSet<ScalarParameter> ScalarParameters;
-    TrackedCompactSet<Vector2Parameter> Vector2Parameters;
-    TrackedCompactSet<Vector3Parameter> Vector3Parameters;
-    TrackedCompactSet<Vector4Parameter> VectorParameters;
-    TrackedCompactSet<Texture2DParameter> Texture2DParameters;
-    TrackedCompactSet<VirtualTextureParameter> VirtualTextureParameters;
+    TrackedCompactSet<material::ScalarResourceParameter> ScalarParameters;
+    TrackedCompactSet<material::Vector2ResourceParameter> Vector2Parameters;
+    TrackedCompactSet<material::Vector3ResourceParameter> Vector3Parameters;
+    TrackedCompactSet<material::Vector4ResourceParameter> VectorParameters;
+    TrackedCompactSet<material::Texture2DResourceParameter> Texture2DParameters;
+    TrackedCompactSet<material::VirtualTextureResourceParameter> VirtualTextureParameters;
     FixedString DiffusionProfileUUID;
     MaterialType MaterialType;
     RenderChannel RenderChannel;

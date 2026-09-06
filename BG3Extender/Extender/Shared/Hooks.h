@@ -5,6 +5,7 @@
 #include <GameDefinitions/Stats/Stats.h>
 #include <GameDefinitions/Net.h>
 #include <CoreLib/Wrappers.h>
+#include <GameHooks/EngineHooksFwdDecl.h>
 
 BEGIN_SE()
 
@@ -14,7 +15,7 @@ public:
     void Startup();
     void HookNetworkMessages(net::MessageFactory* factory);
 
-    void OnParseDataFolder(stats::RPGStats::ParseStructureFolderProc* next, stats::RPGStats* self, Array<STDString>* paths);
+    void OnParseDataBuffers(stats::RPGStats* self);
     void OnClientConnectMessage(net::Message::SerializeProc* wrapped, net::Message* msg, net::BitstreamSerializer* serializer);
 
     enum class ClientConnectMessageSerializeTag{};

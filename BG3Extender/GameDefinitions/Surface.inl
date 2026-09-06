@@ -1,4 +1,5 @@
 #include <GameDefinitions/Components/ServerData.h>
+#include <GameDefinitions/Surface.h>
 
 BEGIN_NS(esv)
 
@@ -30,6 +31,13 @@ void SurfaceManager::AddAction(SurfaceAction* action)
     }
 
     action->Level = Level;
+
+    if (action->GetTypeId() == SurfaceActionType::TransformSurface) {
+        auto initProc = GetStaticSymbols().esv__TransformSurfaceAction__Init;
+        auto transform = static_cast<TransformSurfaceAction*>(action);
+        initProc(transform, transform->SurfaceTransformAction, transform->SurfaceLayer, transform->OriginSurface);
+    }
+
     action->Enter();
     Actions.push_back(action);
 }

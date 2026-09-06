@@ -87,8 +87,6 @@ struct SurfaceAction : ProtectedGameObject<SurfaceAction>
     uint8_t field_78;
 };
 
-using SurfaceActionFactoryCreateProc = SurfaceAction* (void* self, SurfaceActionType type, uint64_t actionHandle);
-
 struct CreateSurfaceActionBase : public SurfaceAction
 {
     EntityHandle Owner;
@@ -206,8 +204,8 @@ struct TransformSurfaceAction : public SurfaceAction
     static constexpr SurfaceActionType Type = SurfaceActionType::TransformSurface;
 
     float Timer;
-    uint8_t SurfaceTransformAction; // FIXME enum
-    uint8_t OriginSurface; // FIXME enum
+    SurfaceTransformActionType SurfaceTransformAction;
+    SurfaceType OriginSurface;
     SurfaceLayer8 SurfaceLayer;
     float GrowCellPerSecond;
     bool Finished;
@@ -321,7 +319,7 @@ struct SurfaceTransformActionRequirement
 
 struct SurfaceTransformActionRequirements
 {
-    uint8_t byte0;
+    SurfaceTransformActionType TransformType;
     Array<SurfaceTransformActionRequirement> Requirements;
 };
 
