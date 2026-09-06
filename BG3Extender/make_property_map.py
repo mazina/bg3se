@@ -724,6 +724,27 @@ sources = [
     'Lua/Server/ServerEvents.h',
 ]
 
+
+def get_most_recent_change():
+    mtime = 0
+    for source in sources:
+        fmtime = os.path.getmtime(source)
+        mtime = fmtime if fmtime > mtime else mtime
+    return mtime
+
+
+def get_definitions_generation_date():
+    defs_path = 'GameDefinitions/Generated/PropertyMaps.inl'
+    if os.path.exists(defs_path):
+        return os.path.getmtime(defs_path)
+    else:
+        return 0
+
+if get_most_recent_change() < get_definitions_generation_date():
+    print("No property map definition changes detected (based on file modification time); skipping generation step")
+    exit(0)
+
+
 structs : dict[str, Structure] = {}
 shared = SharedData()
 

@@ -82,7 +82,9 @@
       <Command>copy /Y "$(TargetPath)" "D:\Apps\Steam\steamapps\common\Baldurs Gate 3\bin\BG3ScriptExtender.dll"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>rem $(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Osiris\Debugger Osiris\Debugger\osidebug.proto
+      <Command>python make_enumerations.py
+python make_property_map.py
+rem $(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Osiris\Debugger Osiris\Debugger\osidebug.proto
 rem $(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Lua\Debugger Lua\Debugger\LuaDebug.proto
 rem $(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Extender\Shared Extender\Shared\ExtenderProtocol.proto
 $(SolutionDir)x64\Debug\ResourceBundler.exe "$(ProjectDir)LuaScripts" "$(ProjectDir)Lua.bundle"</Command>
@@ -117,7 +119,9 @@ $(SolutionDir)x64\Debug\ResourceBundler.exe "$(ProjectDir)LuaScripts" "$(Project
       <DelayLoadDLLs>vulkan-1.dll;d3dcompiler_47.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Osiris\Debugger Osiris\Debugger\osidebug.proto
+      <Command>python make_enumerations.py
+python make_property_map.py
+$(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Osiris\Debugger Osiris\Debugger\osidebug.proto
 $(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Lua\Debugger Lua\Debugger\LuaDebug.proto
 $(SolutionDir)\External\protoc\bin\protoc --cpp_out=$(SolutionDir)\BG3Extender\Extender\Shared Extender\Shared\ExtenderProtocol.proto
 $(SolutionDir)x64\Release\ResourceBundler.exe "$(ProjectDir)LuaScripts" "$(ProjectDir)Lua.bundle"</Command>

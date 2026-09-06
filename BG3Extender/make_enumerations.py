@@ -58,6 +58,33 @@ class EnumerationsPreprocessor:
         return line
 
 
+
+def get_most_recent_change():
+    mtime = 0
+    for file in os.listdir('GameDefinitions/Enumerations'):
+        if file.endswith('.inl'):
+            fmtime = os.path.getmtime('GameDefinitions/Enumerations/' + file)
+            mtime = fmtime if fmtime > mtime else mtime
+
+    for file in os.listdir('GameDefinitions/ExternalEnumerations'):
+        if file.endswith('.inl'):
+            fmtime = os.path.getmtime('GameDefinitions/ExternalEnumerations/' + file)
+            mtime = fmtime if fmtime > mtime else mtime
+    return mtime
+
+
+def get_definitions_generation_date():
+    enums_path = 'GameDefinitions/Generated/Enumerations.inl'
+    if os.path.exists(enums_path):
+        return os.path.getmtime(enums_path)
+    else:
+        return 0
+
+if get_most_recent_change() < get_definitions_generation_date():
+    print("No enumeration definition changes detected (based on file modification time); skipping generation step")
+    exit(0)
+
+
 shared = EnumerationsSharedData()
 preprocessor = EnumerationsPreprocessor(shared)
 external_preprocessor = EnumerationsPreprocessor(shared)
