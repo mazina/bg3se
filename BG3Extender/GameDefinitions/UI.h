@@ -33,8 +33,8 @@ struct GridLengthHelper
 };
 
 using LoadXamlProc = Ptr<BaseComponent>* (Ptr<BaseComponent>& ret, char const* path);
-using VisualPointConversionProc = Point (Visual::*)(Point const& point) const;
-using VisualTreeHelperHitTestProc = HitTestResult (*)(Visual* visual, Point const& point);
+using Visual__PointConversionProc = Point (Visual const*, Point const& point) const;
+using Visual__TreeHelperHitTestProc = HitTestResult (Visual* visual, Point const& point);
 
 struct SymbolManagerInternals
 {
