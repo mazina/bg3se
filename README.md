@@ -30,4 +30,5 @@ The following configuration variables can be set in the `ScriptExtenderSettings.
 
 ### Build Instructions
 
-Download the latest [external dependencies from here](https://nb-stor.s3.eu-central-1.amazonaws.com/bg3-legacy/External.7z) and extract them to the `External/` folder.
+Run `first-time-setup.bat` from the MSVC x64 Native Tools cmdline after cloning the repo ensure that all external dependencies are set up correctly.
+Afterwards you can build/develop the solution using normal Visual Studio tools.

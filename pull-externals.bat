@@ -1,5 +1,6 @@
 if "%VCToolsInstallDir%"=="" goto end
 
+pushd .
 cd External
 
 rem ##### CURL #####
@@ -81,7 +82,7 @@ msbuild ZipLib.sln "/p:Configuration=Debug" /target:ZipLib /m /nologo /consolelo
 msbuild ZipLib.sln "/p:Configuration=Release" /target:ZipLib /m /nologo /consoleloggerparameters:summary
 cd ..
 
-pause
+popd
 exit /b
 
 :no_msvc

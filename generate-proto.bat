@@ -10,4 +10,3 @@ cd ..\..\Osiris\Debugger
 ..\..\..\External\protoc\bin\protoc --cpp_out=. osidebug.proto
 
 popd
-pause
