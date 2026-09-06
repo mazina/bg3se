@@ -219,6 +219,9 @@ namespace bg3se
         SYM_OFF(Noesis__GUI__LoadXaml);
         SYM_OFF(Noesis__Visual__AddVisualChild);
         SYM_OFF(Noesis__Visual__RemoveVisualChild);
+        SYM_OFF(Noesis__Visual__PointFromScreen);
+        SYM_OFF(Noesis__Visual__PointToScreen);
+        SYM_OFF(Noesis__VisualTreeHelper__HitTest);
 
         SYM_OFF(ui__DataContextProvider__ExecuteCommandQueues);
 

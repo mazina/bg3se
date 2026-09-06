@@ -70,6 +70,16 @@ struct StaticSymbols : Noncopyable<StaticSymbols>
 
     stats::BoostPrototypeManager** eoc__BoostPrototypeManager{ nullptr };
 
+    SRWLOCK* Noesis__SymbolManager__Lock{ nullptr };
+    void* Noesis__SymbolManager__Data{ nullptr };
+    void** Noesis__gErrorHandler{ nullptr };
+    void* Noesis__GUI__LoadXaml{ nullptr };
+    void* Noesis__Visual__AddVisualChild{ nullptr };
+    void* Noesis__Visual__RemoveVisualChild{ nullptr };
+    void* Noesis__Visual__PointFromScreen{ nullptr };
+    void* Noesis__Visual__PointToScreen{ nullptr };
+    void* Noesis__VisualTreeHelper__HitTest{ nullptr };
+
     stats::PassivePrototypeManager** eoc__PassivePrototypeManager{ nullptr };
     stats::PassivePrototype__InitProc* eoc__PassivePrototype__Init{ nullptr };
 
