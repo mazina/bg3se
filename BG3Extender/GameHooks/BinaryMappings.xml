@@ -1020,6 +1020,42 @@
       <Target Type="Indirect" Offset="@ref2" Symbol="Noesis__Visual__AddVisualChild" />
     </Mapping>
 
+    <Mapping Name="Noesis::Visual::PointToScreen" AllowFail="true">
+      @target 48 89 5c 24 18 // mov     [rsp+18h], rbx
+      57 // push    rdi
+      b8 00 01 00 00 // mov     eax, 100h
+      e8 ?? ?? ?? ?? // call    __alloca_probe
+      48 2b e0 // sub     rsp, rax
+      0f 29 b4 24 f0 00 00 00 // movaps  [rsp+0F0h], xmm6
+      0f 29 bc 24 e0 00 00 00 // movaps  [rsp+0E0h], xmm7
+      48 8b 05 ?? ?? ?? ?? // mov     rax, [__security_cookie]
+      48 33 c4 // xor     rax, rsp
+      48 89 84 24 d0 00 00 00 // mov     [rsp+0D0h], rax
+      f3 41 0f 10 30 // movss   xmm6, dword ptr [r8]
+      48 8b fa // mov     rdi, rdx; Point return buffer
+      f3 41 0f 10 78 04 // movss   xmm7, dword ptr [r8+4]
+      48 8d 54 24 60 // lea     rdx, [rsp+60h]
+      48 8b d9 // mov     rbx, rcx; Visual this
+      <Target Type="Absolute" Offset="@target"
+        Symbol="Noesis__Visual__PointToScreen" />
+    </Mapping>
+
+    <Mapping Name="Noesis::VisualTreeHelper::HitTest" AllowFail="true">
+      4c 8d 47 18 // lea     r8, [rdi+18h]; screen Point
+      48 8d 54 24 20 // lea     rdx, [rsp+20h]; Point return buffer
+      @ref0 e8 ?? ?? ?? ?? // call    Noesis::Visual::PointFromScreen
+      4c 8b c0 // mov     r8, rax; local Point
+      48 8b 97 a8 00 00 00 // mov     rdx, [rdi+0A8h]; Visual
+      48 8d 4c 24 28 // lea     rcx, [rsp+28h]; HitTestResult return buffer
+      @ref1 e8 ?? ?? ?? ?? // call    Noesis::VisualTreeHelper::HitTest
+      48 83 38 00 // cmp     qword ptr [rax], 0; result.visualHit
+      0f 85 ?? ?? ?? ?? // jnz
+      <Target Type="Indirect" Offset="@ref0"
+        Symbol="Noesis__Visual__PointFromScreen" />
+      <Target Type="Indirect" Offset="@ref1"
+        Symbol="Noesis__VisualTreeHelper__HitTest" />
+    </Mapping>
+
     <!-- Sigs: exposed as "IsReachable" -->
     <Mapping Name="eoc::AiGrid::FindPath">
       48 8b 83 a8 01 00 00 // mov     rax, [rbx+1A8h]

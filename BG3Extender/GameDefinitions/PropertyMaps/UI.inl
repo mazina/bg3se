@@ -121,6 +121,9 @@ INHERIT(Noesis::DependencyObject)
 P_FREE_GETTER(VisualParent, Noesis::VisualHelpers::GetVisualParent)
 P_FREE_GETTER(VisualChildrenCount, Noesis::VisualHelpers::GetVisualChildrenCount)
 P_FUN(VisualChild, Noesis::VisualHelpers::GetVisualChild)
+P_FUN(PointFromScreen, Noesis::VisualHelpers::PointFromScreen)
+P_FUN(PointToScreen, Noesis::VisualHelpers::PointToScreen)
+P_FUN(HitTest, Noesis::VisualHelpers::HitTest)
 END_CLS()
 
 

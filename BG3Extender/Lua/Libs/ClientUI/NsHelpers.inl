@@ -714,6 +714,73 @@ Visual* VisualHelpers::GetVisualChild(Visual const* o, uint32_t index)
     }
 }
 
+namespace
+{
+    void EnsureVisualClientThread(lua_State* L, char const* functionName)
+    {
+        auto state = lua::State::FromLua(L);
+        if (state == nullptr
+            || !state->IsClient()
+            || GetCurrentContextType() != ContextType::Client) {
+            luaL_error(L, "%s() can only be called from Client Lua", functionName);
+            return;
+        }
+
+        if (state->GetExtensionState().GetOwningThread() != GetCurrentThreadId()) {
+            luaL_error(L, "%s() can only be called on the Client owning thread", functionName);
+        }
+    }
+
+    void* RequireNoesisMapping(lua_State* L, void* address, char const* symbol)
+    {
+        if (address == nullptr) {
+            luaL_error(L, "%s mapping is unavailable for the current game version", symbol);
+            return nullptr;
+        }
+
+        return address;
+    }
+
+    Point InvokeVisualPointConversion(Visual const* visual, Point const& point, void* address)
+    {
+        // Visual has multiple inheritance in its ancestry, so a MSVC member-function
+        // pointer may be wider than a code pointer. Zero-initialize its adjustment
+        // fields and copy only the mapped function address into its code slot.
+        VisualPointConversionProc proc{};
+        static_assert(sizeof(proc) >= sizeof(address));
+        memcpy(&proc, &address, sizeof(address));
+        return (visual->*proc)(point);
+    }
+}
+
+Point VisualHelpers::PointFromScreen(lua_State* L, Visual const* o, Point const& point)
+{
+    EnsureVisualClientThread(L, "PointFromScreen");
+    auto address = RequireNoesisMapping(L,
+        GetStaticSymbols().Noesis__Visual__PointFromScreen,
+        "Noesis::Visual::PointFromScreen");
+    return InvokeVisualPointConversion(o, point, address);
+}
+
+Point VisualHelpers::PointToScreen(lua_State* L, Visual const* o, Point const& point)
+{
+    EnsureVisualClientThread(L, "PointToScreen");
+    auto address = RequireNoesisMapping(L,
+        GetStaticSymbols().Noesis__Visual__PointToScreen,
+        "Noesis::Visual::PointToScreen");
+    return InvokeVisualPointConversion(o, point, address);
+}
+
+Visual* VisualHelpers::HitTest(lua_State* L, Visual* o, Point const& point)
+{
+    EnsureVisualClientThread(L, "HitTest");
+    auto address = RequireNoesisMapping(L,
+        GetStaticSymbols().Noesis__VisualTreeHelper__HitTest,
+        "Noesis::VisualTreeHelper::HitTest");
+    auto proc = reinterpret_cast<VisualTreeHelperHitTestProc>(address);
+    return proc(o, point).visualHit;
+}
+
 RoutedEvent* UIElementDataHelpers::GetEvent(UIElementData const* o, Symbol evt)
 {
     auto it = o->mEvents.Find(evt);
