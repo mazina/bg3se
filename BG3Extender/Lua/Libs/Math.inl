@@ -1,3 +1,4 @@
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/matrix_interpolation.hpp>
@@ -530,8 +531,8 @@ void Rotate(lua_State* L, MathParam const& m, float angle, glm::vec3 const& axis
     switch (m.Arity) {
     case 16:
     {
-        glm::rotate(m.mat4, angle, axis);
-        assign(L, 1, m.mat4);
+        auto rotated = glm::rotate(m.mat4, angle, axis);
+        assign(L, 1, rotated);
         break;
     }
 
@@ -539,8 +540,8 @@ void Rotate(lua_State* L, MathParam const& m, float angle, glm::vec3 const& axis
     {
         glm::mat4 m4{ m.mat3 };
         m4[3][3] = 1.0f;
-        glm::rotate(m4, angle, axis);
-        assign(L, 1, glm::mat3(m4));
+        auto rotated = glm::rotate(m4, angle, axis);
+        assign(L, 1, glm::mat3(rotated));
         break;
     }
 
@@ -554,8 +555,8 @@ void Rotate(lua_State* L, MathParam const& m, float angle, glm::vec3 const& axis
 /// </summary>
 void Translate(lua_State* L, glm::mat4 const& m, glm::vec3 const& translation)
 {
-    glm::translate(m, translation);
-    assign(L, 1, m);
+    auto translated = glm::translate(m, translation);
+    assign(L, 1, translated);
 }
 
 /// <summary>
@@ -563,8 +564,8 @@ void Translate(lua_State* L, glm::mat4 const& m, glm::vec3 const& translation)
 /// </summary>
 void Scale(lua_State* L, glm::mat4 const& m, glm::vec3 const& scale)
 {
-    glm::scale(m, scale);
-    assign(L, 1, m);
+    auto scaled = glm::scale(m, scale);
+    assign(L, 1, scaled);
 }
 
 /// <summary>

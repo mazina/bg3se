@@ -19,39 +19,39 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\External\optick-master\src\optick.config.h" />
-    <ClInclude Include="..\External\optick-master\src\optick.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_capi.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_common.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_core.freebsd.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_core.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_core.linux.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_core.macos.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_core.platform.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_core.win.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_gpu.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_memory.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_message.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_miniz.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_serialization.h" />
-    <ClInclude Include="..\External\optick-master\src\optick_server.h" />
+    <ClInclude Include="..\External\optick\src\optick.config.h" />
+    <ClInclude Include="..\External\optick\src\optick.h" />
+    <ClInclude Include="..\External\optick\src\optick_capi.h" />
+    <ClInclude Include="..\External\optick\src\optick_common.h" />
+    <ClInclude Include="..\External\optick\src\optick_core.freebsd.h" />
+    <ClInclude Include="..\External\optick\src\optick_core.h" />
+    <ClInclude Include="..\External\optick\src\optick_core.linux.h" />
+    <ClInclude Include="..\External\optick\src\optick_core.macos.h" />
+    <ClInclude Include="..\External\optick\src\optick_core.platform.h" />
+    <ClInclude Include="..\External\optick\src\optick_core.win.h" />
+    <ClInclude Include="..\External\optick\src\optick_gpu.h" />
+    <ClInclude Include="..\External\optick\src\optick_memory.h" />
+    <ClInclude Include="..\External\optick\src\optick_message.h" />
+    <ClInclude Include="..\External\optick\src\optick_miniz.h" />
+    <ClInclude Include="..\External\optick\src\optick_serialization.h" />
+    <ClInclude Include="..\External\optick\src\optick_server.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\External\optick-master\src\optick_capi.cpp" />
-    <ClCompile Include="..\External\optick-master\src\optick_core.cpp" />
-    <ClCompile Include="..\External\optick-master\src\optick_gpu.cpp" />
-    <ClCompile Include="..\External\optick-master\src\optick_gpu.d3d12.cpp">
+    <ClCompile Include="..\External\optick\src\optick_capi.cpp" />
+    <ClCompile Include="..\External\optick\src\optick_core.cpp" />
+    <ClCompile Include="..\External\optick\src\optick_gpu.cpp" />
+    <ClCompile Include="..\External\optick\src\optick_gpu.d3d12.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\External\optick-master\src\optick_gpu.vulkan.cpp">
+    <ClCompile Include="..\External\optick\src\optick_gpu.vulkan.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\External\optick-master\src\optick_message.cpp" />
-    <ClCompile Include="..\External\optick-master\src\optick_miniz.cpp" />
-    <ClCompile Include="..\External\optick-master\src\optick_serialization.cpp" />
-    <ClCompile Include="..\External\optick-master\src\optick_server.cpp" />
+    <ClCompile Include="..\External\optick\src\optick_message.cpp" />
+    <ClCompile Include="..\External\optick\src\optick_miniz.cpp" />
+    <ClCompile Include="..\External\optick\src\optick_serialization.cpp" />
+    <ClCompile Include="..\External\optick\src\optick_server.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -141,10 +141,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>

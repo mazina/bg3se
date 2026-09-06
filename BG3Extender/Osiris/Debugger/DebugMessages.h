@@ -1,7 +1,10 @@
 #pragma once
 
 #include <cstdint>
+#pragma warning(push)
+#pragma warning(disable:4267)
 #include <Osiris/Debugger/osidebug.pb.h>
+#pragma warning(pop)
 #include <GameDefinitions/Osiris.h>
 #include <Osiris/Debugger/DebugInterface.h>
 

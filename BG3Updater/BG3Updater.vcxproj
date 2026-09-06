@@ -92,8 +92,8 @@
       <PreprocessorDefinitions>_DEBUG;OSI_NO_DEBUG_LOG;CURL_STATICLIB;OSILOADER_EXPORTS;_WINDOWS;_USRDLL;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\BG3Updater;$(SolutionDir)\External\curl\include;$(SolutionDir)\External\ziplib\Source;$(SolutionDir)\External\tinycrypt\lib\include;$(SolutionDir)External\rapidjson-master\include;$(SolutionDir)\BG3Extender;$(SolutionDir)\External\glm;$(SolutionDir)External\SDL2-2.30.1\include;$(SolutionDir)External\Detours\include;$(SolutionDir)External\NoesisGUI-NativeSDK-win-3.1.7-Indie\Include;$(SolutionDir)External\imgui</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\BG3Updater;$(SolutionDir)\External\curl\include;$(SolutionDir)\External\ziplib\Source;$(SolutionDir)\External\tinycrypt\lib\include;$(SolutionDir)External\rapidjson\include;$(SolutionDir)\BG3Extender;$(SolutionDir)\External\glm;$(SolutionDir)External\SDL\include;$(SolutionDir)External\Detours\include;$(SolutionDir)External\NoesisGUI-NativeSDK-win-3.1.7-Indie\Include;$(SolutionDir)External\imgui</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
@@ -102,7 +102,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>detours.lib;SDL2.lib;CoreLib.lib;version.lib;TinyCrypt.lib;comctl32.lib;shlwapi.lib;Rpcrt4.lib;dbghelp.lib;ZipLib.lib;bzip2.lib;lzma.lib;zlib.lib;libcurl_a.lib;Normaliz.lib;Wldap32.lib;ws2_32.lib;Crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)\External\curl\lib;$(SolutionDir)\External\ziplib\Bin\x64\Debug;$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)\External\SDL2-2.30.1\lib\x64;$(SolutionDir)\External\Detours\lib.X64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External\curl\lib;$(SolutionDir)\External\ziplib\Bin\x64\Debug;$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)\External\SDL\lib\x64;$(SolutionDir)\External\Detours\lib.X64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetPath)" "D:\Apps\Steam\steamapps\common\Baldurs Gate 3\bin\DWrite.dll"</Command>
@@ -156,7 +156,9 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\BG3Updater;$(SolutionDir)\External\curl\include;$(SolutionDir)\External\ziplib\Source;$(SolutionDir)\External\tinycrypt\lib\include;$(SolutionDir)External\rapidjson-master\include;$(SolutionDir)\BG3Extender;$(SolutionDir)\External\glm;$(SolutionDir)External\SDL2-2.30.1\include;$(SolutionDir)External\Detours\include;$(SolutionDir)External\NoesisGUI-NativeSDK-win-3.1.7-Indie\Include;$(SolutionDir)External\imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\BG3Updater;$(SolutionDir)\External\curl\include;$(SolutionDir)\External\ziplib\Source;$(SolutionDir)\External\tinycrypt\lib\include;$(SolutionDir)External\rapidjson\include;$(SolutionDir)\BG3Extender;$(SolutionDir)\External\glm;$(SolutionDir)External\SDL\include;$(SolutionDir)External\Detours\include;$(SolutionDir)External\NoesisGUI-NativeSDK-win-3.1.7-Indie\Include;$(SolutionDir)External\imgui</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -165,7 +167,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <AdditionalDependencies>detours.lib;SDL2.lib;CoreLib.lib;version.lib;TinyCrypt.lib;comctl32.lib;shlwapi.lib;Rpcrt4.lib;dbghelp.lib;ZipLib.lib;bzip2.lib;lzma.lib;zlib.lib;libcurl_a.lib;Normaliz.lib;Wldap32.lib;ws2_32.lib;Crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\External\curl\lib;$(SolutionDir)\External\ziplib\Bin\x64\Release;$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)\External\SDL2-2.30.1\lib\x64;$(SolutionDir)\External\Detours\lib.X64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External\curl\lib;$(SolutionDir)\External\ziplib\Bin\x64\Release;$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)\External\SDL\lib\x64;$(SolutionDir)\External\Detours\lib.X64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetPath)" "D:\Apps\Steam\steamapps\common\Baldurs Gate 3\bin\DWrite.dll"</Command>

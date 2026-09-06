@@ -3,11 +3,14 @@
 #include <cstdint>
 #include <WinSock2.h>
 
-#include <Osiris/Debugger/osidebug.pb.h>
-#include <Lua/Debugger/LuaDebug.pb.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+#pragma warning(push)
+#pragma warning(disable:4267)
+#include <Osiris/Debugger/osidebug.pb.h>
+#include <Lua/Debugger/LuaDebug.pb.h>
+#pragma warning(pop)
 
 namespace bg3se
 {

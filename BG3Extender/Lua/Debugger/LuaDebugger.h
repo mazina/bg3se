@@ -2,7 +2,10 @@
 
 #include <cstdint>
 #include <concurrent_queue.h>
-#include "LuaDebug.pb.h"
+#pragma warning(push)
+#pragma warning(disable:4267)
+#include <Lua/Debugger/LuaDebug.pb.h>
+#pragma warning(pop)
 #include <GameDefinitions/Osiris.h>
 #include <Lua/Debugger/LuaDebugMessages.h>
 

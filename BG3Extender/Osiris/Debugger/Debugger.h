@@ -3,7 +3,10 @@
 #include <cstdint>
 #include <concurrent_queue.h>
 #include <GameDefinitions/Osiris.h>
+#pragma warning(push)
+#pragma warning(disable:4267)
 #include <Osiris/Debugger/osidebug.pb.h>
+#pragma warning(pop)
 #include <Osiris/Debugger/DebugMessages.h>
 #include <Osiris/Shared/OsirisHelpers.h>
 

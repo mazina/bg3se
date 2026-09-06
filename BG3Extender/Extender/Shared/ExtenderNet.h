@@ -1,8 +1,11 @@
 #pragma once
 
 #include <GameDefinitions/Net.h>
-#include <Extender/Shared/ExtenderProtocol.pb.h>
 #include <concurrent_queue.h>
+#pragma warning(push)
+#pragma warning(disable:4267)
+#include <Extender/Shared/ExtenderProtocol.pb.h>
+#pragma warning(pop)
 
 BEGIN_NS(net)
 
