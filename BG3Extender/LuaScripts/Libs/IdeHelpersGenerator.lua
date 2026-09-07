@@ -808,13 +808,13 @@ function Generator:EmitClassEventData(type)
 
     local name = self:MakeTypeName(type.TypeName)
     local context = "any"
-    local _,_,eventName = string.find(name, serverEventParamsPattern)
+    local _,_,eventName = string.find(type.TypeName, serverEventParamsPattern)
     if not eventName then
-        _,_,eventName = string.find(name, clientEventParamsPattern)
+        _,_,eventName = string.find(type.TypeName, clientEventParamsPattern)
         if eventName then
             context = "client"
         else
-            _,_,eventName = string.find(name, bothContextEventParamsPattern)
+            _,_,eventName = string.find(type.TypeName, bothContextEventParamsPattern)
         end
     else
         context = "server"
